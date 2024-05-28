@@ -7,7 +7,7 @@
 
     - name: Show status of canonical-livepatch
       debug:
-        msg: The file does exist"
+        msg: The livepatch binary exists"
       when: file_status.stat.stdout
 
     - name: Updating Canonical LivePatch to 720 minutes
