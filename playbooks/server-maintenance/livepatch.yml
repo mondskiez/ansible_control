@@ -1,15 +1,17 @@
 ---
 
     - name: Check to see if canonical-livepatch is installed
-      stat:
-        path: /snap/bin/canonical-livepatch
+      #stat:
+      #  path: /snap/bin/canonical-livepatch
+      shell: which canonical-livepatch
       register: file_status
+      failed_when: file_status.rc == 1
 
     - name: Show status of canonical-livepatch
       debug:
-        msg: The livepatch binary exists"
-      when: file_status.stat.stdout
+        msg: The livepatch binary does not exist"
+      failed_when: file_status.rc == 1
 
     - name: Updating Canonical LivePatch to 720 minutes
       command: sudo canonical-livepatch config check-interval=720
-      when: file_status.stat.stdout is defined 
+      when: file_status.rc == 0
