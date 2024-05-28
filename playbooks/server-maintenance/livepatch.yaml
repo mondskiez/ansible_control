@@ -1,4 +1,19 @@
 ---
 
+- hosts: all
+  become: yes
+  tasks:
+
+    - name: Check to see if canonical-livepatch is installed
+      stat:
+        path: /snap/bin/canonical-livepatch
+      register: file_status
+
+    - name: Show status of canonical-livepatch
+      debug:
+        msg: The file does exist"
+      when: file_status.stat.exists
+
     - name: Updating Canonical LivePatch to 720 minutes
       command: sudo canonical-livepatch config check-interval=720
+      when: file_status.stat.exists is defined 
