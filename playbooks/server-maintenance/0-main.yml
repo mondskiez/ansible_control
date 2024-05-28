@@ -4,8 +4,8 @@
   become: true
   tasks:
 
-  - include_tasks: apt-update.yaml
-  - include_tasks: livepatch.yaml
-#  - include_tasks: 3-enable-ufw.yaml
-#  - include_tasks: 4-secure-ssh.yaml
-#  - include_tasks: reboot-server.yaml
+  - include_tasks: apt-update.yml
+  - include_tasks: livepatch.yml
+#  - include_tasks: 3-enable-ufw.yml
+#  - include_tasks: 4-secure-ssh.yml
+#  - include_tasks: reboot-server.yml
