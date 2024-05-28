@@ -41,9 +41,6 @@
       set_fact:
         ansible_sudo_passwd: "$6$RWo0laTgZpiSlKES$X6adutPj3ZjVNubU3Ehg.E2B/DtEgd/ni7FGaa4XNVFdVrewPITM0fMUld5JD5hn8rrxXXnlvQBSeQ4uBBBfe0"
 
-#    - name: switch user to morty
-#      command: su morty
-
     # Update and install the base software
     - name: Update apt package cache
       apt:
