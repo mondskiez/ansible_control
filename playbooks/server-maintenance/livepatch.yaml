@@ -1,0 +1,4 @@
+---
+
+    - name: Updating Canonical LivePatch to 720 minutes
+      command: sudo canonical-livepatch config check-interval=720

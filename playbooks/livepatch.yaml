@@ -1,8 +1,0 @@
-- name: change Canonical LivePatch to 720 minutes
-  hosts: all
-  gather_facts: false
-  tasks:
-
-    - name: Updating Canonical LivePatch to 720 minutes
-      become: yes
-      ansible.builtin.command: sudo canonical-livepatch config check-interval=720

@@ -1,7 +1,4 @@
-- name: updating && upgrading && autocleaning && autoremoving packages
-  hosts: all
-  gather_facts: false
-  tasks:
+---
 
     - name: Update all packages to their latest version
       become: yes

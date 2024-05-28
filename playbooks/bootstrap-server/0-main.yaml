@@ -8,4 +8,4 @@
   - include_tasks: 2-setup-omz.yaml
   - include_tasks: 3-enable-ufw.yaml
   - include_tasks: 4-secure-ssh.yaml
-  - include_tasks: reboot-server.yaml
+  - include_tasks: 5-server-reboot.yaml
