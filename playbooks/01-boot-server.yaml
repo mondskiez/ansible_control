@@ -18,7 +18,6 @@
       timezone:
         name: Asia/Manila
 
-    ### password: authy backups are so great
     - name: Create morty user
       user:
         name: morty
