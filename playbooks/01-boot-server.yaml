@@ -107,7 +107,6 @@
         path: "/home/morty/.oh-my-zsh"
         owner: morty
         group: morty
-        #settings: ""
         recurse: "true"
     
     - name: create .hushlogin file to disable MOTD
@@ -129,17 +128,6 @@
           alias f2br="sudo docker exec -it fail2ban fail2ban-client restart"
         owner: "morty"
         group: "morty"
-      
-#    - name: "create .zshenv file to load zshrc"
-#      copy:
-#        dest: /home/morty/.zshenv
-#        content: |
-#          # include .zshrc if it exists
-#          if [ -f "$HOME/.zshrc" ]; then
-#            . "$HOME/.zshrc"
-#          fi
-#        owner: "morty"
-#        group: "morty"
     
     - name: Run source to .zshrc to effect changes
       shell: "/usr/bin/zsh /home/morty/.zshrc"
