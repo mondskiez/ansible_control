@@ -1,0 +1,14 @@
+- name: updating && upgrading && autocleaning && autoremoving packages
+  hosts: all
+  gather_facts: false
+  tasks:
+#    - name: Ping my hots
+#     ansible.builtin.ping:
+
+    - name: Update all packages to their latest version
+      become: yes
+      ansible.builtin.apt:
+       upgrade: yes
+       update_cache: yes
+       autoclean: true
+       autoremove: true

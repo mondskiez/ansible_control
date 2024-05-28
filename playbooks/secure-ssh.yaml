@@ -1,0 +1,25 @@
+---
+# SSH server settings, in line with https://stribika.github.io/2015/01/04/secure-secure-shell.html
+# Before using, change myhosts to your hosts' nickname and myuser to your username (two instances! make sure you replace both or you'll be locked out of ssh!)
+- hosts: all
+  become: true
+  #remote_user: morty
+  tasks:
+
+    - name: "modifying sshd_config"
+      lineinfile: 
+        path: /etc/ssh/sshd_config
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+      loop:
+        - regexp: '^#?AuthenticationMethods' 
+          line: 'AuthenticationMethods publickey'
+        - regexp: '^#?PasswordAuthentication' 
+          line: 'PasswordAuthentication no'
+        - regexp: '^#?PubkeyAuthentication'
+          line: 'PubkeyAuthentication yes'   
+        - regexp: '^#PermitRootLogin'
+          line: 'PermitRootLogin No'
+    
+    - name: "Restart SSH server"
+      command: sudo systemctl restart ssh

@@ -1,0 +1,23 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+    - name: "Edit ResolvedConf - DNS line"
+      lineinfile:
+         path: /etc/systemd/resolved.conf
+         regexp: '^#DNS='
+         line: 'DNS=1.1.1.1'
+    
+    - name: "Edit ResolvedConf - Stub Line"
+      lineinfile:
+        path: /etc/systemd/resolved.conf
+        regexp: '^#DNSStubListener'
+        line: 'DNSStubListener=no'
+    
+    - name: "force removal symbolic link"
+      shell: "sudo ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf"
+
+    - name: "reboot server"
+      shell: "sudo reboot"

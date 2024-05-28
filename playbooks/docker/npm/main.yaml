@@ -1,0 +1,25 @@
+---
+
+- hosts: all
+  become: yes
+  tasks:
+    - name: "create Nginx-Proxy Manager directory in Morty"
+      file:
+        dest: /home/morty/npm
+        state: directory
+        mode: '0755'
+
+    - name: copy NPM compose file
+      copy:
+        src: ~/ansible_control/playbooks/docker/npm/docker-compose.yaml
+        dest: /home/morty/npm
+        owner: morty
+        group: morty
+        mode: '0755'
+
+    - name: deploy NPM container
+      community.docker.docker_compose_v2:
+        project_src: /home/morty/npm
+        files:
+        - docker-compose.yaml
+        #state: started

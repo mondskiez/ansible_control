@@ -1,0 +1,146 @@
+---
+
+- hosts: all
+  become: yes
+  tasks:
+    - name: Set static hostname
+      hostname:
+        name: mondskiez-test
+
+    - name: Set Timezone to Asia/Manila
+      timezone:
+        name: Asia/Manila
+
+    ### password: authy backups are so great
+    - name: Create morty user
+      user:
+        name: morty
+        password: $6$RWo0laTgZpiSlKES$X6adutPj3ZjVNubU3Ehg.E2B/DtEgd/ni7FGaa4XNVFdVrewPITM0fMUld5JD5hn8rrxXXnlvQBSeQ4uBBBfe0
+        groups: sudo
+
+    - name: create morty nopasswd sudoers
+      copy:
+        dest: /etc/sudoers.d/morty
+        owner: root
+        group: root
+        content: |
+          morty ALL=(ALL) NOPASSWD: ALL
+    
+    - name: add morty sshkey
+      authorized_key:
+        user: morty
+        key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKLT51cPfBtitD7yLQ6Ed2ViIE9YSV5bUUth3LcZsFMc ansible"
+
+    - name: Ensure ansible_sudo_passwd matches the [new] user passwd
+      set_fact:
+        ansible_sudo_passwd: "$6$RWo0laTgZpiSlKES$X6adutPj3ZjVNubU3Ehg.E2B/DtEgd/ni7FGaa4XNVFdVrewPITM0fMUld5JD5hn8rrxXXnlvQBSeQ4uBBBfe0"
+
+#    - name: switch user to morty
+#      command: su morty
+
+    # Update and install the base software
+    - name: Update apt package cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+        name:
+          - aptitude
+          - net-tools
+          - zsh
+          - haveged
+          - htop 
+          - powerline
+          - fonts-powerline 
+          - zsh-syntax-highlighting
+          - git
+        state: latest
+        autoclean: yes
+        autoremove: yes
+        purge: yes
+    
+    - name: "DNS to 1.1.1.1 to remove Bind port53 already in use"
+      lineinfile:
+        path: /etc/systemd/resolved.conf
+        regexp: '^DNS='
+        line: 'DNS=1.1.1.1'
+    
+    - name: "DNS remove StubListener"
+      lineinfile:
+        path: /etc/systemd/resolved.conf
+        regexp: '^DNSStublisten'
+        line: 'DNSStublistener = no'
+    
+    - name: "force removal of symbolic link of resolv.conf"
+      command: sudo ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf
+
+    - name: change morty default shell to ZSH
+      command: usermod -s /usr/bin/zsh morty
+
+    - name: "OMZ establish home directory."
+      set_fact:
+        omz_user_home_dir: "/home/morty"
+    
+    - name: "OMZ establish install location."
+      set_fact:
+        omz_install_path: "/home/morty/.oh-my-zsh"
+    
+    - name: "OMZ clone Robby Russell OhMyZSH git repo for morty."
+      git:
+        repo: "https://github.com/robbyrussell/oh-my-zsh.git"
+        dest: "/home/morty/.oh-my-zsh"
+        update: "true"
+        accept_hostkey: "true"
+        version: "master"
+    
+    - name: "OMZ clone ZSH Auto Suggestions git repo"
+      git:
+        repo: "https://github.com/zsh-users/zsh-autosuggestions"
+        dest: "/home/morty/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+        update: "true"
+        accept_hostkey: "true"
+        version: "master"
+    
+    - name: "OMZ | set ownership on newly cloned repository."
+      file:
+        path: "/home/morty/.oh-my-zsh"
+        owner: morty
+        group: morty
+        #settings: ""
+        recurse: "true"
+    
+    - name: create .hushlogin file to disable MOTD
+      command: touch ~/.hushlogin
+
+    - name: "Creating a .zshrc file"
+      copy:
+        dest: /home/morty/.zshrc
+        content: |
+          ZSH_THEME="xiong-chiamiov-plus"
+          plugins=(git sudo colored-man-pages zsh-autosuggestions)
+          source /home/morty/.oh-my-zsh/oh-my-zsh.sh
+          source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+          export PATH="/home/morty/.local/bin:$PATH"%
+          alias tq="clear && /usr/bin/bash /home/morty/tq.sh"
+          alias tp="clear && /usr/bin/bash /home/morty/tp.sh"
+          alias update="clear && sudo apt-get update -y && sudo apt-get upgrade -y && sudo apt-get dist-upgrade -y && sudo apt autoclean -y && sudo apt autoremove -y"
+          alias f2bss="sudo docker exec -it fail2ban fail2ban-client status sshd"
+          alias f2br="sudo docker exec -it fail2ban fail2ban-client restart"
+        owner: "morty"
+        group: "morty"
+      
+#    - name: "create .zshenv file to load zshrc"
+#      copy:
+#        dest: /home/morty/.zshenv
+#        content: |
+#          # include .zshrc if it exists
+#          if [ -f "$HOME/.zshrc" ]; then
+#            . "$HOME/.zshrc"
+#          fi
+#        owner: "morty"
+#        group: "morty"
+    
+    - name: Run source to .zshrc to effect changes
+      shell: "/usr/bin/zsh /home/morty/.zshrc"
+
+#    - name: restart server
+#      shell: "sudo reboot"

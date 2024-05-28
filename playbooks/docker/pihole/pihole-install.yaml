@@ -1,0 +1,25 @@
+---
+
+- hosts: all
+  become: yes
+  tasks:
+    - name: "create Pihole directory in Morty"
+      file:
+        dest: /home/morty/pihole
+        state: directory
+        mode: '0755'
+
+    - name: copy Pihole compose file
+      copy:
+        src: ~/ansible_control/playbooks/docker/pihole/docker-compose.yaml
+        dest: /home/morty/pihole
+        owner: morty
+        group: morty
+        mode: '0755'
+
+    - name: deploy Pihole container
+      community.docker.docker_compose_v2:
+        project_src: /home/morty/pihole
+        files:
+        - docker-compose.yaml
+        #state: started

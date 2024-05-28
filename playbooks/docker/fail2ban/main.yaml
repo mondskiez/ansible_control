@@ -1,0 +1,45 @@
+---
+
+- hosts: all
+  become: yes
+  tasks:
+    - name: "create fail2ban directory in Morty"
+      file:
+        dest: /home/morty/fail2ban
+        state: directory
+        mode: '0755'
+
+    - name: copy fail2ban Docker Compose files
+      copy:
+        src: ~/ansible_control/playbooks/docker/fail2ban/docker-compose.yaml
+        dest: /home/morty/fail2ban
+        owner: morty
+        group: morty
+        mode: '0755'
+
+    - name: deploy fail2ban Container
+      community.docker.docker_compose_v2:
+        project_src: /home/morty/fail2ban
+        files:
+        - docker-compose.yaml
+        #state: started
+
+    - name: create jail.local
+      copy:
+        src: ~/ansible_control/playbooks/docker/fail2ban/jail.local
+        dest: /home/morty/fail2ban/data/jail.d
+        owner: morty
+        group: morty
+        mode: '0755'
+    
+    - name: restart docker fail2ban-client service
+      docker_container: 
+        name: fail2ban
+        image: crazymax/fail2ban:latest
+        state: started
+        restart: yes
+        #comparisons: 
+        #  '*': ignore
+
+#    - name: fail2ban-client sshd status
+#      command: "sudo docker exec -it fail2ban fail2ban-client status sshd"
