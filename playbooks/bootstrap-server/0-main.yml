@@ -1,0 +1,12 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+  - include_tasks: 1-create-hostname.yml
+  - include_tasks: 2-create-user.yml
+  - include_tasks: 3-setup-apps.yml
+  - include_tasks: 4-enable-ufw.yml
+  - include_tasks: 5-secure-ssh.yml
+  - include_tasks: 6-server-reboot.yml
