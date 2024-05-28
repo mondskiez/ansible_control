@@ -1,0 +1,16 @@
+---
+
+    - name: Set static hostname
+      hostname:
+        name: mondskiez-test
+    
+    - name: add new hostname to host file
+      lineinfile:
+        dest: /etc/hosts
+        state: present
+        line: "127.0.0.1 mondskiez-test"
+        insertafter: "EOF" 
+
+    - name: Set Timezone to Asia/Manila
+      timezone:
+        name: Asia/Manila

@@ -1,5 +1,25 @@
 ---
 
+    # Update and install the base software
+    - name: Update apt package cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+        name:
+          - haveged
+          - htop 
+          - git
+          - aptitude
+          - net-tools
+          - zsh
+          - zsh-syntax-highlighting
+          - powerline
+          - fonts-powerline 
+        state: latest
+        autoclean: yes
+        autoremove: yes
+        purge: yes
+
     - name: "editing /etc/systemd/resolved.conf"
       lineinfile:
         path: /etc/systemd/resolved.conf

@@ -1,20 +1,5 @@
 ---
 
-    - name: Set static hostname
-      hostname:
-        name: mondskiez-test
-    
-    - name: add new hostname to host file
-      lineinfile:
-        dest: /etc/hosts
-        state: present
-        line: "127.0.0.1 mondskiez-test"
-        insertafter: "EOF" 
-
-    - name: Set Timezone to Asia/Manila
-      timezone:
-        name: Asia/Manila
-
     - name: Create morty user
       user:
         name: morty
@@ -37,24 +22,4 @@
     - name: Ensure ansible_sudo_passwd matches the [new] user passwd
       set_fact:
         ansible_sudo_passwd: "$6$RWo0laTgZpiSlKES$X6adutPj3ZjVNubU3Ehg.E2B/DtEgd/ni7FGaa4XNVFdVrewPITM0fMUld5JD5hn8rrxXXnlvQBSeQ4uBBBfe0"
-
-    # Update and install the base software
-    - name: Update apt package cache
-      apt:
-        update_cache: yes
-        cache_valid_time: 3600
-        name:
-          - haveged
-          - htop 
-          - git
-          - aptitude
-          - net-tools
-          - zsh
-          - zsh-syntax-highlighting
-          - powerline
-          - fonts-powerline 
-        state: latest
-        autoclean: yes
-        autoremove: yes
-        purge: yes
     
