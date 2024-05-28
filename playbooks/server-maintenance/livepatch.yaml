@@ -8,8 +8,8 @@
     - name: Show status of canonical-livepatch
       debug:
         msg: The file does exist"
-      when: file_status.stat.exists
+      when: file_status.stat.stdout
 
     - name: Updating Canonical LivePatch to 720 minutes
       command: sudo canonical-livepatch config check-interval=720
-      when: file_status.stat.exists is defined 
+      when: file_status.stat.stdout is defined 
