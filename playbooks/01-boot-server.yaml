@@ -6,6 +6,13 @@
     - name: Set static hostname
       hostname:
         name: mondskiez-test
+    
+    - name: add new hostname to host file
+      lineinfile:
+        dest: /etc/hosts
+        state: present
+        line: "127.0.0.1 mondskiez-test"
+        insertafter: "EOF" 
 
     - name: Set Timezone to Asia/Manila
       timezone:
@@ -44,31 +51,30 @@
         update_cache: yes
         cache_valid_time: 3600
         name:
+          - haveged
+          - htop 
+          - git
           - aptitude
           - net-tools
           - zsh
-          - haveged
-          - htop 
+          - zsh-syntax-highlighting
           - powerline
           - fonts-powerline 
-          - zsh-syntax-highlighting
-          - git
         state: latest
         autoclean: yes
         autoremove: yes
         purge: yes
     
-    - name: "DNS to 1.1.1.1 to remove Bind port53 already in use"
+    - name: "editing /etc/systemd/resolved.conf"
       lineinfile:
         path: /etc/systemd/resolved.conf
-        regexp: '^DNS='
-        line: 'DNS=1.1.1.1'
-    
-    - name: "DNS remove StubListener"
-      lineinfile:
-        path: /etc/systemd/resolved.conf
-        regexp: '^DNSStublisten'
-        line: 'DNSStublistener = no'
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+      loop:
+        - regexp: '^#DNS='
+          line: 'DNS=1.1.1.1'
+        - regexp: '^#DNSStubListener=yes'
+          line: 'DNSStubListener=no'
     
     - name: "force removal of symbolic link of resolv.conf"
       command: sudo ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf
@@ -142,5 +148,27 @@
     - name: Run source to .zshrc to effect changes
       shell: "/usr/bin/zsh /home/morty/.zshrc"
 
-#    - name: restart server
-#      shell: "sudo reboot"
+    - name: UFW allow openssh
+      ufw: 
+        rule: allow
+        name: OpenSSH
+      
+    - name: UFW allow ports 80 443
+      ufw:
+        rule: "{{ item.rule }}"
+        port: "{{ item.port }}"
+        proto: "{{ item.proto }}"
+      loop:
+        - rule: allow
+          port: 80
+          proto: tcp
+        - rule: allow
+          port: 443
+          proto: tcp
+    
+    - name: enable UFW
+      ufw:
+        state: enabled
+
+    - name: restart server
+      shell: "sudo reboot"
