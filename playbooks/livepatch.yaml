@@ -2,8 +2,6 @@
   hosts: all
   gather_facts: false
   tasks:
-#    - name: Ping my hots
-#     ansible.builtin.ping:
 
     - name: Updating Canonical LivePatch to 720 minutes
       become: yes
