@@ -21,6 +21,3 @@
     - name: enable UFW
       ufw:
         state: enabled
-
-    - name: restart server
-      shell: "sudo reboot"
