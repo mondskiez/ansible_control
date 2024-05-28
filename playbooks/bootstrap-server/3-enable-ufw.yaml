@@ -1,0 +1,26 @@
+---
+
+    - name: UFW allow openssh
+      ufw: 
+        rule: allow
+        name: OpenSSH
+      
+    - name: UFW allow ports 80 443
+      ufw:
+        rule: "{{ item.rule }}"
+        port: "{{ item.port }}"
+        proto: "{{ item.proto }}"
+      loop:
+        - rule: allow
+          port: 80
+          proto: tcp
+        - rule: allow
+          port: 443
+          proto: tcp
+    
+    - name: enable UFW
+      ufw:
+        state: enabled
+
+    - name: restart server
+      shell: "sudo reboot"
