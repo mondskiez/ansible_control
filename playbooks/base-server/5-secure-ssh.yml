@@ -1,9 +1,5 @@
 ---
 
-- hosts: all
-  become: true
-  tasks:
-
     - name: "check default SSH port"
       shell: 
         cmd: "sudo ss -tulpn | grep ssh | awk 'FNR == 1 {print $5}' | awk -F: '{print $2}'"
@@ -30,6 +26,13 @@
         - regexp: '^#PermitRootLogin'
           line: 'PermitRootLogin No'
 
+    - name: creating ssh.socket.d directory
+      file:
+        dest: /etc/systemd/system/ssh.socket.d/
+        state: directory
+        owner: morty
+        group: morty
+
     - name: "modifying SSH port to 22222 on Ubuntu Server 22.10 and higher"
       copy:
         dest: /etc/systemd/system/ssh.socket.d/override.conf
@@ -37,11 +40,11 @@
           [Socket]
           ListenStream=
           ListenStream=22222
-      when: ansible_facts['distribution_version'] | int > 22.04
+      when: ansible_facts['distribution_version'] >= jammy
 
     - name: "Restarting SSH.socket on Ubuntu Server 22.10 and higher"
       command: sudo systemctl restart ssh.socket
-      when: ansible_facts['distribution_version'] | int > 22.04
+      when: ansible_facts['distribution_version'] >= jammy
 
     - name: "Restarting SSH server"
       command: sudo systemctl restart ssh
