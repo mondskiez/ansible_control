@@ -1,17 +1,40 @@
 ---
 
     - name: Check to see if canonical-livepatch is installed
-      #stat:
-      #  path: /snap/bin/canonical-livepatch
       shell: which canonical-livepatch
       register: file_status
-      failed_when: file_status.rc == 1
+    
+    - name: canonical binary location found
+      debug:
+        msg: Binary is located at {{ file_status.stdout }}
+      when: file_status.rc == 0
 
-    - name: Show status of canonical-livepatch
+    - name: canonical binary location not found
       debug:
         msg: The livepatch binary does not exist"
-      failed_when: file_status.rc == 1
+      when: file_status.rc == 1
 
-    - name: Updating Canonical LivePatch to 720 minutes
-      command: sudo canonical-livepatch config check-interval=720
+    - name: Retrieving default check-interval time
+      shell:
+        cmd: "canonical-livepatch config | grep check"
+      register: cl_time_default
       when: file_status.rc == 0
+
+    - name: Show default check-interval time
+      debug:
+        msg: Default {{ cl_time_default.stdout }}
+      when: cl_time_default.rc == 0
+
+    - name: Updating check-interval config to 720 minutes or 12 hours
+      command: sudo canonical-livepatch config check-interval=720
+      when: cl_time_default.rc == 0
+
+    - name: Retrieving updated check-interval time
+      shell:
+        cmd: "canonical-livepatch config | grep check"
+      register: cl_time_updated
+
+    - name: Show updated check-interval time
+      debug:
+        msg: Updated {{ cl_time_updated.stdout }}
+      when: cl_time_updated.rc == 0
