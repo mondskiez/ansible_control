@@ -55,6 +55,16 @@
       set_fact:
         omz_install_path: "/home/morty/.oh-my-zsh"
     
+    - name: check if .oh-my-zsh folder exists
+      stat:
+        path: "/home/morty/.oh-my-zsh"
+      register: omz_folder_present
+
+    - name: omz folder exists
+      debug:
+        msg: ".oh-my-zsh folder exists"
+      when: omz_folder_present.isdir is defined and omz_folder_present.stat.isdir
+
     - name: "OMZ clone Robby Russell OhMyZSH git repo for morty."
       git:
         repo: "https://github.com/robbyrussell/oh-my-zsh.git"
@@ -62,8 +72,18 @@
         update: "true"
         accept_hostkey: "true"
         version: "master"
-        force: "true"
+      when: omz_folder_present.isdir is not defined
     
+    - name: check if zsh-autosuggestion folder exists
+      stat:
+        path: "/home/morty/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+      register: zsh_auto_present
+
+    - name: "zsh-autosuggestions folder exists"
+      debug:
+        msg: "zsh-autosuggestions folder exists"
+      when: zsh_auto_present.isdir is defined and zsh_auto_present.stat.isdir
+
     - name: "OMZ clone ZSH Auto Suggestions git repo"
       git:
         repo: "https://github.com/zsh-users/zsh-autosuggestions"
@@ -71,6 +91,7 @@
         update: "true"
         accept_hostkey: "true"
         version: "master"
+      when: zsh_auto_present.isdir is not defined
     
     - name: "OMZ | set ownership on newly cloned repository."
       file:

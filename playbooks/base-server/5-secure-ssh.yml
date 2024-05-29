@@ -40,20 +40,25 @@
           [Socket]
           ListenStream=
           ListenStream=22222
-      when: ansible_facts['distribution_version'] >= jammy
+      when: ansible_facts['distribution_version'] is version('22.05', '>=')
 
-    - name: "Restarting SSH.socket on Ubuntu Server 22.10 and higher"
+    - name: Restarting SSH.socket on Ubuntu Server 22.10 and higher
       command: sudo systemctl restart ssh.socket
-      when: ansible_facts['distribution_version'] >= jammy
+      when: ansible_facts['distribution_version'] is version('22.05', '>=')
 
-    - name: "Restarting SSH server"
+    - name: Enable SSH server
+      command: sudo systemctl enable ssh
+    
+    - name: Restarting SSH server
       command: sudo systemctl restart ssh
 
-    - name: "check new ports results"
+    - name: check new ports results
       shell: 
         cmd: "sudo ss -tulpn | grep ssh | awk 'FNR == 1 {print $5}' | awk -F: '{print $2}'"
       register: ssh_port_after
 
-    - name: "SSH port after"
+    - name: "SSH port before and after comparison"
       debug:
-        msg: "SSH port after is {{ ssh_port_after.stdout }}"
+        msg: 
+        - "SSH port before is {{ ssh_port_before.stdout }}"
+        - "SSH port after is {{ ssh_port_after.stdout }}"
