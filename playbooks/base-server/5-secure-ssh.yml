@@ -40,11 +40,11 @@
           [Socket]
           ListenStream=
           ListenStream=22222
-      when: ansible_facts['distribution_version'] is version('22.05', '>=')
+      when: ansible_facts['distribution_version'] is version('22.04', '>')
 
     - name: Restarting SSH.socket on Ubuntu Server 22.10 and higher
       command: sudo systemctl restart ssh.socket
-      when: ansible_facts['distribution_version'] is version('22.05', '>=')
+      when: ansible_facts['distribution_version'] is version('22.02', '>')
 
     - name: Enable SSH server
       command: sudo systemctl enable ssh

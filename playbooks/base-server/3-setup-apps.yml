@@ -72,7 +72,7 @@
         update: "true"
         accept_hostkey: "true"
         version: "master"
-      when: omz_folder_present.isdir is not defined
+      when: omz_folder_present.isdir is false
     
     - name: check if zsh-autosuggestion folder exists
       stat:
@@ -91,7 +91,7 @@
         update: "true"
         accept_hostkey: "true"
         version: "master"
-      when: zsh_auto_present.isdir is not defined
+      when: zsh_auto_present.isdir is false
     
     - name: "OMZ | set ownership on newly cloned repository."
       file:
