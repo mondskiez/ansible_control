@@ -1,10 +1,12 @@
 ---
 
+### Enable SSH in UFW
     - name: UFW allow openssh
       ufw: 
         rule: allow
         name: OpenSSH
-      
+
+### UFW allow ports 80 and 443
     - name: UFW allow ports 80 443
       ufw:
         rule: "{{ item.rule }}"
@@ -17,7 +19,8 @@
         - rule: allow
           port: 443
           proto: tcp
-    
+
+### enable and start UFW
     - name: enable UFW
       ufw:
         state: enabled

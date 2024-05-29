@@ -3,7 +3,7 @@
     - name: Update all packages to their latest version
       become: yes
       ansible.builtin.apt:
-       upgrade: yes
        update_cache: yes
+       upgrade: yes
        autoclean: true
        autoremove: true

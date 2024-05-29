@@ -1,5 +1,6 @@
 ---
-    
+
+### install your preferred base apps by listing them individually after name: -
     - name: Installing base apps
       apt:
         update_cache: yes
@@ -15,20 +16,22 @@
           - powerline
           - fonts-powerline 
         state: latest
-        autoclean: yes
-        autoremove: yes
-        purge: yes
 
+### this step is only for me coz I deploy docker Pi-Hole on all my servers
+### by default Port 53 will be used by systemd
     - name: Check what is using Port 53
       shell:
         cmd: "sudo lsof -i:53 | awk 'FNR==2 {print $1}'"
       register: port53user
-    
-    - name: What is using Port 53
-      debug:
-        msg: Port 53 is being used by "{{ port53user.stdout }}"
 
-    - name: "editing /etc/systemd/resolved.conf"
+### show what process is using Port 53
+    - name: What process is using Port 53?
+      debug:
+        msg: Port 53 is being used by "{{port53user.stdout}}"
+
+### if Port 53 is being used by systemd then we have to free it up by editing resolved.conf
+### this process will add DNS to 1.1.1.1 and DNSStubListener=no
+    - name: editing /etc/systemd/resolved.conf
       lineinfile:
         path: /etc/systemd/resolved.conf
         regexp: "{{ item.regexp }}"
@@ -39,73 +42,88 @@
         - regexp: '^#DNSStubListener=yes'
           line: 'DNSStubListener=no'
       when: port53user.stdout == port53systemd
-    
-    - name: "force removal of symbolic link of resolv.conf"
+
+### if Port 53 is being used by systemd then we have to force remove the existing symbolic links
+### this will only take effect after a server reboot
+    - name: Removing existing symbolic link of resolv.conf
       command: sudo ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf
       when: port53user.stdout == port53systemd
 
+### since I prefer using ZSH to bash
     - name: change morty default shell to ZSH
       command: usermod -s /usr/bin/zsh morty
 
-    - name: "OMZ establish home directory."
+### setting the fact for user home directory
+    - name: Establish user %HOME directory
       set_fact:
-        omz_user_home_dir: "/home/morty"
-    
-    - name: "OMZ establish install location."
+        omz_user_home_dir: "{{ user_home }}"
+
+### setting the fact for OMZ install location
+    - name: Establish Oh-My-ZSH install directory
       set_fact:
-        omz_install_path: "/home/morty/.oh-my-zsh"
-    
-    - name: check if .oh-my-zsh folder exists
+        omz_install_path: "{{ user_home }}.oh-my-zsh"
+
+### checking user %HOME director for .oh-my-zsh sub-directory
+    - name: check if .oh-my-zsh folder exists in %HOME
       stat:
-        path: "/home/morty/.oh-my-zsh"
+        path: "{{ user_home }}.oh-my-zsh"
       register: omz_folder_present
 
-    - name: omz folder exists
+### this part is crucial because if the folder exists, the next task will not run
+### however if the folder does not exist, then the we clone the Oh-My-ZSH git repo
+    - name: Show results omz folder exists
       debug:
-        msg: ".oh-my-zsh folder exists"
+        msg: "folder exists at {{ user_home }}.oh-my-zsh"
       when: omz_folder_present.isdir is defined and omz_folder_present.stat.isdir
 
-    - name: "OMZ clone Robby Russell OhMyZSH git repo for morty."
+### git clone the Oh-My-ZSH repo if folder above does not exist
+    - name: Cloning Oh-My-ZSH repo for user
       git:
         repo: "https://github.com/robbyrussell/oh-my-zsh.git"
-        dest: "/home/morty/.oh-my-zsh"
+        dest: "{{ user_home }}.oh-my-zsh"
         update: "true"
         accept_hostkey: "true"
         version: "master"
       when: omz_folder_present.isdir is false
-    
+
+### checking user %HOME directory for zsh-autosuggestion directory under plugins subdirectory of OMZ
     - name: check if zsh-autosuggestion folder exists
       stat:
-        path: "/home/morty/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+        path: "{{ user_home }}.oh-my-zsh/custom/plugins/zsh-autosuggestions"
       register: zsh_auto_present
 
+### crucial part again, if zsh-autosuggestion folder exists, above the next task is skipped
+### however, if the zsh-autosuggestion folder does not exist, the we git clone the repo
     - name: "zsh-autosuggestions folder exists"
       debug:
         msg: "zsh-autosuggestions folder exists"
       when: zsh_auto_present.isdir is defined and zsh_auto_present.stat.isdir
 
-    - name: "OMZ clone ZSH Auto Suggestions git repo"
+### git clone the zsh-autosuggestions repo if folder above does not exist
+    - name: "Git clone zsh-autosuggestions repo"
       git:
         repo: "https://github.com/zsh-users/zsh-autosuggestions"
-        dest: "/home/morty/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+        dest: "{{ user_home }}.oh-my-zsh/custom/plugins/zsh-autosuggestions"
         update: "true"
         accept_hostkey: "true"
         version: "master"
       when: zsh_auto_present.isdir is false
-    
-    - name: "OMZ | set ownership on newly cloned repository."
+### change owner and group of .oh-my-zsh folder to morty
+    - name: "Set ownership on .oh-my-zsh folder to."
       file:
-        path: "/home/morty/.oh-my-zsh"
-        owner: morty
-        group: morty
+        path: "{{ user_home }}.oh-my-zsh"
+        owner: "{{ user_name }}"
+        group: "{{ user_name }}"
         recurse: "true"
-    
+
+### creating an empty hidden .hushlogin to disable Ubuntu message-of-the-day
     - name: create .hushlogin file to disable MOTD
       command: touch ~/.hushlogin
 
+### creating my desired .zshrc file with my preferred theme, plugins and aliases already incorporated
     - name: "Creating a .zshrc file"
       copy:
-        dest: /home/morty/.zshrc
+        dest: "{{ user_home }}/.zshrc"
         content: |
           ZSH_THEME="xiong-chiamiov-plus"
           plugins=(git sudo colored-man-pages zsh-autosuggestions)
@@ -117,8 +135,9 @@
           alias update="clear && sudo apt-get update -y && sudo apt-get upgrade -y && sudo apt-get dist-upgrade -y && sudo apt autoclean -y && sudo apt autoremove -y"
           alias f2bss="sudo docker exec -it fail2ban fail2ban-client status sshd"
           alias f2br="sudo docker exec -it fail2ban fail2ban-client restart"
-        owner: "morty"
-        group: "morty"
-    
+        owner: "{{ user_name }}"
+        group: "{{ user_name }}"
+  
+  ### source the .zshrc file above for changes to take effect
     - name: Run source to .zshrc to effect changes
-      shell: "/usr/bin/zsh /home/morty/.zshrc"
+      shell: /usr/bin/zsh "{{ user_home }}"/.zshrc

@@ -1,15 +1,18 @@
 ---
 
+### check SSH port before changes are made via grepping and awking ss -tulpn
     - name: "check default SSH port"
       shell: 
         cmd: "sudo ss -tulpn | grep ssh | awk 'FNR == 1 {print $5}' | awk -F: '{print $2}'"
       register: ssh_port_before
 
+### show the return value of default SSH port
     - name: SSH default port
       debug:
         msg: "SSH default port is {{ ssh_port_before.stdout }}"
 
-    - name: modifying sshd_config
+### edit the sshd_config to configure pubkeyauth only
+    - name: modifying sshd_config for pubkeyauth only
       lineinfile: 
         path: /etc/ssh/sshd_config
         regexp: "{{ item.regexp }}"
@@ -17,6 +20,8 @@
       loop:
         - regexp: '^Include'
           line: '#Include /etc/ssh/sshd_config.d/*.conf'
+        - regexp: '^#Port'
+          line: 'Port 22222'
         - regexp: '^#?AuthenticationMethods' 
           line: 'AuthenticationMethods publickey'
         - regexp: '^#?PasswordAuthentication' 
@@ -26,31 +31,43 @@
         - regexp: '^#PermitRootLogin'
           line: 'PermitRootLogin No'
 
+### on Ubuntu distros above 22.04 ssh is being handled by ssh.socket
+### in order to save changes to the sshd_config, a directory must first be created
     - name: creating ssh.socket.d directory
       file:
         dest: /etc/systemd/system/ssh.socket.d/
         state: directory
-        owner: morty
-        group: morty
+        owner: "{{ user_name }}"
+        group: "{{ user_name }}"
+      when: ansible_facts[distribution_version'] is version('22.04', '>')
 
-    - name: "modifying SSH port to 22222 on Ubuntu Server 22.10 and higher"
+### after task above, an overried.conf file must be created
+### the file incorporates the ssh_stream var to ListenStream=ssh_stream
+    - name: "creating override.conf to specify SSH port Ubuntu Server 22.10 and higher"
       copy:
         dest: /etc/systemd/system/ssh.socket.d/override.conf
         content: |
           [Socket]
           ListenStream=
-          ListenStream=22222
+          ListenStream={{ ssh_stream }}}
       when: ansible_facts['distribution_version'] is version('22.04', '>')
 
+### on Ubuntu distro above 22.04, restart ssh.socket prior to enabling and restarting SSH
     - name: Restarting SSH.socket on Ubuntu Server 22.10 and higher
       command: sudo systemctl restart ssh.socket
-      when: ansible_facts['distribution_version'] is version('22.02', '>')
+      when: ansible_facts['distribution_version'] is version('22.04', '>')
 
     - name: Enable SSH server
       command: sudo systemctl enable ssh
     
     - name: Restarting SSH server
       command: sudo systemctl restart ssh
+
+    - name: UFW allow new ssh port
+      ufw:
+        rule: limit
+        port: "{{ ssh_stream }}"
+        proto: tcp
 
     - name: check new ports results
       shell: 
