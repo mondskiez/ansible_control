@@ -2,6 +2,9 @@
 
 - hosts: all
   become: true
+  vars:
+    port53systemd: "systemd-r"
+
   tasks:
 
   - include_tasks: 1-create-hostname.yml
