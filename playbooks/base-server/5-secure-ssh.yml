@@ -1,11 +1,26 @@
 ---
 
-    - name: "modifying sshd_config"
+- hosts: all
+  become: true
+  tasks:
+
+    - name: "check default SSH port"
+      shell: 
+        cmd: "sudo ss -tulpn | grep ssh | awk 'FNR == 1 {print $5}' | awk -F: '{print $2}'"
+      register: ssh_port_before
+
+    - name: SSH default port
+      debug:
+        msg: "SSH default port is {{ ssh_port_before.stdout }}"
+
+    - name: modifying sshd_config
       lineinfile: 
         path: /etc/ssh/sshd_config
         regexp: "{{ item.regexp }}"
         line: "{{ item.line }}"
       loop:
+        - regexp: '^Include'
+          line: '#Include /etc/ssh/sshd_config.d/*.conf'
         - regexp: '^#?AuthenticationMethods' 
           line: 'AuthenticationMethods publickey'
         - regexp: '^#?PasswordAuthentication' 
@@ -14,6 +29,28 @@
           line: 'PubkeyAuthentication yes'   
         - regexp: '^#PermitRootLogin'
           line: 'PermitRootLogin No'
-    
-    - name: "Restart SSH server"
+
+    - name: "modifying SSH port to 22222 on Ubuntu Server 22.10 and higher"
+      copy:
+        dest: /etc/systemd/system/ssh.socket.d/override.conf
+        content: |
+          [Socket]
+          ListenStream=
+          ListenStream=22222
+      when: ansible_facts['distribution_version'] | int > 22.04
+
+    - name: "Restarting SSH.socket on Ubuntu Server 22.10 and higher"
+      command: sudo systemctl restart ssh.socket
+      when: ansible_facts['distribution_version'] | int > 22.04
+
+    - name: "Restarting SSH server"
       command: sudo systemctl restart ssh
+
+    - name: "check new ports results"
+      shell: 
+        cmd: "sudo ss -tulpn | grep ssh | awk 'FNR == 1 {print $5}' | awk -F: '{print $2}'"
+      register: ssh_port_after
+
+    - name: "SSH port after"
+      debug:
+        msg: "SSH port after is {{ ssh_port_after.stdout }}"
