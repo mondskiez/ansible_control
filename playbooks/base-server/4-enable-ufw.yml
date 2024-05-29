@@ -21,6 +21,6 @@
           proto: tcp
 
 ### enable and start UFW
-    - name: enable UFW
+    - name: enable and start UFW service
       ufw:
         state: enabled

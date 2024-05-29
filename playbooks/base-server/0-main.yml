@@ -8,8 +8,11 @@
     desired_hostname: mondskiez-test
     tz: Asia/Manila
     user_name: morty
-    user_home: /home/morty
+    user_home: /home/{{ user_name }}
     user_pword: $6$RWo0laTgZpiSlKES$X6adutPj3ZjVNubU3Ehg.E2B/DtEgd/ni7FGaa4XNVFdVrewPITM0fMUld5JD5hn8rrxXXnlvQBSeQ4uBBBfe0
+    omz_install_path: "{{ user_home }}/"
+    omz_zsh_path: "{{ omz_install_path }}.oh-my-zsh/"
+    omz_auto_path: "{{ omz_zsh_path }}custom/plugins/zsh-autosuggestions"
     ssh_stream: 22222
     port53systemd: systemd-r
     jammy: 22.04

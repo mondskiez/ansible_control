@@ -39,7 +39,8 @@
         state: directory
         owner: "{{ user_name }}"
         group: "{{ user_name }}"
-      when: ansible_facts['distribution_version'] is version('22.04', '>')
+#      when: ansible_facts['distribution_version'] is version('22.05, >=')
+#       when: "{{ ansible_distribution_version }} >= 22.05"
 
 ### after task above, an overried.conf file must be created
 ### the file incorporates the ssh_stream var to ListenStream=ssh_stream
@@ -50,24 +51,27 @@
           [Socket]
           ListenStream=
           ListenStream={{ ssh_stream }}}
-      when: ansible_facts['distribution_version'] is version('22.04', '>')
 
-### on Ubuntu distro above 22.04, restart ssh.socket prior to enabling and restarting SSH
-    - name: Restarting SSH.socket on Ubuntu Server 22.10 and higher
-      command: sudo systemctl restart ssh.socket
-      when: ansible_facts['distribution_version'] is version('22.04', '>')
-
-    - name: Enable SSH server
+    - name: Enable SSH service on Ubuntu distro 22.04 and below
       command: sudo systemctl enable ssh
     
-    - name: Restarting SSH server
-      command: sudo systemctl restart ssh
+    - name: Enable SSH service on Ubuntu distro above 22.04
+      command: sudo systemctl enable ssh.service
+
+#    - name: Restarting SSH service on Ubuntu distro 22.04 and below
+ #     command: sudo systemctl restart ssh
+    
+ #   - name: Restarting SSH service on Ubuntu distro above 22.04
+ #     command: sudo systemctl restart ssh.service
 
     - name: UFW allow new ssh port
       ufw:
         rule: limit
         port: "{{ ssh_stream }}"
         proto: tcp
+    
+    - name: Reload UFW service
+      command: sudo ufw reload
 
     - name: check new ports results
       shell: 

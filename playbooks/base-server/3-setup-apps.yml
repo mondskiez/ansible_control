@@ -51,79 +51,53 @@
 
 ### since I prefer using ZSH to bash
     - name: change morty default shell to ZSH
-      command: usermod -s /usr/bin/zsh morty
+      command: usermod -s /usr/bin/zsh {{ user_name }}
 
-### setting the fact for user home directory
-    - name: Establish user %HOME directory
-      set_fact:
-        omz_user_home_dir: "{{ user_home }}"
-
-### setting the fact for OMZ install location
-    - name: Establish Oh-My-ZSH install directory
-      set_fact:
-        omz_install_path: "{{ user_home }}.oh-my-zsh"
-
-### checking user %HOME director for .oh-my-zsh sub-directory
-    - name: check if .oh-my-zsh folder exists in %HOME
-      stat:
-        path: "{{ user_home }}.oh-my-zsh"
-      register: omz_folder_present
-
-### this part is crucial because if the folder exists, the next task will not run
-### however if the folder does not exist, then the we clone the Oh-My-ZSH git repo
-    - name: Show results omz folder exists
-      debug:
-        msg: "folder exists at {{ user_home }}.oh-my-zsh"
-      when: omz_folder_present.isdir is defined and omz_folder_present.stat.isdir
-
-### git clone the Oh-My-ZSH repo if folder above does not exist
-    - name: Cloning Oh-My-ZSH repo for user
-      git:
-        repo: "https://github.com/robbyrussell/oh-my-zsh.git"
-        dest: "{{ user_home }}.oh-my-zsh"
-        update: "true"
-        accept_hostkey: "true"
-        version: "master"
-      when: omz_folder_present.isdir is false
-
-### checking user %HOME directory for zsh-autosuggestion directory under plugins subdirectory of OMZ
-    - name: check if zsh-autosuggestion folder exists
-      stat:
-        path: "{{ user_home }}.oh-my-zsh/custom/plugins/zsh-autosuggestions"
-      register: zsh_auto_present
-
-### crucial part again, if zsh-autosuggestion folder exists, above the next task is skipped
-### however, if the zsh-autosuggestion folder does not exist, the we git clone the repo
-    - name: "zsh-autosuggestions folder exists"
-      debug:
-        msg: "zsh-autosuggestions folder exists"
-      when: zsh_auto_present.isdir is defined and zsh_auto_present.stat.isdir
-
-### git clone the zsh-autosuggestions repo if folder above does not exist
-    - name: "Git clone zsh-autosuggestions repo"
-      git:
-        repo: "https://github.com/zsh-users/zsh-autosuggestions"
-        dest: "{{ user_home }}.oh-my-zsh/custom/plugins/zsh-autosuggestions"
-        update: "true"
-        accept_hostkey: "true"
-        version: "master"
-      when: zsh_auto_present.isdir is false
-### change owner and group of .oh-my-zsh folder to morty
-    - name: "Set ownership on .oh-my-zsh folder to."
+    - name: Create omz_zsh path
       file:
-        path: "{{ user_home }}.oh-my-zsh"
+        dest: "{{ omz_zsh_path}}"
+        state: absent
+    
+    - name: Create omz_auto_path
+      file:
+        dest: "{{ omz_auto_path }}"
+        state: absent
+
+    - name: Create git config --global --add safe.directory
+      shell:
+        cmd: "git config --global --add safe.directory /home/morty/.oh-my-zsh"
+
+    - name: Cloning oh-my-zsh repo
+      git:
+        repo: https://github.com/robbyrussell/oh-my-zsh.git
+        dest: "{{ omz_zsh_path }}"
+
+    - name: Cloning zsh-autosuggestions repo
+      git:
+        repo: https://github.com/zsh-users/zsh-autosuggestions
+        dest: "{{ omz_auto_path }}"
+
+### change owner and group of .oh-my-zsh folder to morty
+    - name: Recursively set ownership to .oh-my-zsh folder
+      file:
+        path: "{{ omz_zsh_path }}"
         owner: "{{ user_name }}"
         group: "{{ user_name }}"
-        recurse: "true"
+        recurse: true
 
 ### creating an empty hidden .hushlogin to disable Ubuntu message-of-the-day
     - name: create .hushlogin file to disable MOTD
-      command: touch ~/.hushlogin
+      copy:
+        dest: "{{ user_home }}.hushlogin"
+        content: |
+
+        owner: "{{ user_name }}"
+        group: "{{ user_name }}"
 
 ### creating my desired .zshrc file with my preferred theme, plugins and aliases already incorporated
     - name: "Creating a .zshrc file"
       copy:
-        dest: "{{ user_home }}/.zshrc"
+        dest: "{{ user_home }}.zshrc"
         content: |
           ZSH_THEME="xiong-chiamiov-plus"
           plugins=(git sudo colored-man-pages zsh-autosuggestions)
@@ -140,4 +114,4 @@
   
   ### source the .zshrc file above for changes to take effect
     - name: Run source to .zshrc to effect changes
-      shell: /usr/bin/zsh "{{ user_home }}"/.zshrc
+      shell: /usr/bin/zsh {{ user_home }}.zshrc
