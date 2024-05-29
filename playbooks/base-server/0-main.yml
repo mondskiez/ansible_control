@@ -4,6 +4,7 @@
   become: true
   vars:
     port53systemd: "systemd-r"
+    jammy: "22.04"
 
   tasks:
 
