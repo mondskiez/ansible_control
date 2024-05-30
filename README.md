@@ -9,13 +9,15 @@ Base server installation come from 0-main.yml file
 
     playbooks/base-server/0-main.yml
 
-Server Maintenance play come from 0-main.yml file
+Server maintenance play come from 0-main.yml file
 
-    playbooks/server-maintainance/0-main.yml
+    playbooks/server-maintenance/0-main.yml
 
 Edit the files to your desired settings and run:
 
-    ansible-playbook playbooks/base-server/0-main.yml -K --limit 'web5b,web7' -e "ansible_user=youruser"
+    ansible-playbook playbooks/base-server/0-main.yml -K --limit 'web5b,web7' -e "ansible_user=old_user"
+
+    ansible-playbook playbooks/server-maintenance/0-mail.yml -K --limit 'host1,host2,host3' -e "ansible_user=new_user"
 
 Take note of the trailing commands after .yml files
 
