@@ -4,12 +4,10 @@
   become: true
   vars:
     cl_desired_time: 720
+    ### cl_desired_time is our defined time for canonical-livepatch check-interval
     ### 720 is in minutes, ergo 12 hours
     
   tasks:
 
-#  - include_tasks: apt-upgrade.yml
+  - include_tasks: apt-upgrade.yml
   - include_tasks: livepatch.yml
-#  - include_tasks: 3-enable-ufw.yml
-#  - include_tasks: 4-secure-ssh.yml
-#  - include_tasks: reboot-server.yml
