@@ -1,6 +1,5 @@
 ---
 
-
       - name: Check Canonical-LivePatch Binary exists
         shell: which canonical-livepatch
         register: lp_location
@@ -37,5 +36,5 @@
       - name: Compare check-interval times
         debug:
           msg: 
-          - "Canonical-LivePatch check-interval time before: {{ lp_time_before.stdout }}" 
+          - "Canonical-LivePatch check-intervtime before: {{ lp_time_before.stdout }}" 
           - "Canonical-LivePatch check-interval time after: {{ cl_time_after.stdout }}"
