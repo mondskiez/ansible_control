@@ -13,7 +13,7 @@ Server maintenance play come from 0-main.yml file
 
     playbooks/server-maintenance/0-main.yml
 
-Edit the files to your desired settings and run:
+Edit the 0-main.yml files and input your own settings then run:
 
     ansible-playbook playbooks/base-server/0-main.yml -K --limit 'web5b,web7' -e "ansible_user=old_user"
 
