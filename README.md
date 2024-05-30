@@ -7,7 +7,7 @@ First, modify the host.yml to your preferred structure.
 
 Second, setup your inventory path by editing the file.
 
-    ansible.config
+    ansible_control/ansible.config
 
 Base server playbook is at:
 
