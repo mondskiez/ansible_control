@@ -13,7 +13,7 @@ Edit the file to your desired settings and run:
 
     ansible-playbook playbooks/base-server/0-main.yml -K --limit 'web5b,web7' -e "ansible_user=youruser"
 
-Take note of the following ansible command line keys which you can add to the command above:
+Take note of the trailing commands after the play:
 
 1. -K ### to run the play with the sudo password of the server defined in hosts.yml 
 2. --limit 'hostname1,hostname2,hostname3' ### to run the playbook against a specified number of hosts only
