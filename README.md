@@ -5,12 +5,11 @@ Firstly, modify the host.yml to your preferred structure
 
     ansible_control/hosts.yml
 
-Base-server settings to install follows: To use open:
+Base-server plays come from 0-main.yml file
 
-1. playbook/base-server/
-2. edit 0-main.yml # to enable your desired output
+    playbook/base-server/edit 0-main.yml # to enable your desired output
 
-run:
+Edit the file to your desired settings and run:
 
     ansible-playbook playbooks/base-server/0-main.yml -K --limit 'web5b,web7' -e "ansible_user=youruser"
 
