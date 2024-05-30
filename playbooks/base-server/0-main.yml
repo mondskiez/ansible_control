@@ -1,7 +1,7 @@
 ---
 
 ### the base-server install starts from this play
-### just disable any tasks below by commenting out the -include_task line with #
+### change the user morty to your desired username
 - hosts: all
   become: true
   vars:
@@ -10,15 +10,16 @@
     user_name: morty
     user_home: /home/{{ user_name }}
     user_pword: $6$RWo0laTgZpiSlKES$X6adutPj3ZjVNubU3Ehg.E2B/DtEgd/ni7FGaa4XNVFdVrewPITM0fMUld5JD5hn8rrxXXnlvQBSeQ4uBBBfe0
-    omz_install_path: "{{ user_home }}/"
-    omz_zsh_path: "{{ omz_install_path }}.oh-my-zsh/"
-    omz_auto_path: "{{ omz_zsh_path }}custom/plugins/zsh-autosuggestions"
+    omz_install_path: "/home/{{ user_name }}/"
+    omz_zsh_path: "/home/{{ user_name }}/.oh-my-zsh/"
+    omz_auto_path: "/home/{{ user_name }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
     ssh_stream: 22222
     port53systemd: systemd-r
     jammy: 22.04
 
   tasks:
-### these are the ordered .yml files that will be executed consecutively
+### the following .yml files will be executed consecutively
+### to disable a task simply put a # at the beginning of the task line
   - include_tasks: 1-create-hostname.yml
   - include_tasks: 2-create-user.yml
   - include_tasks: 3-setup-apps.yml
