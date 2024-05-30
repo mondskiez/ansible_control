@@ -19,9 +19,9 @@ Edit the 0-main.yml files and input your own settings then run:
 
     ansible-playbook playbooks/server-maintenance/0-mail.yml -K --limit 'host1,host2,host3' -e "ansible_user=new_user"
 
-Take note of the trailing commands after .yml files
+Note the trailing arguments after the 0-main.yml files in the command above
 
-To run play with sudo password of the server defined in hosts.yml use either:
+To run play with sudo password of the server defined in hosts.yml use add:
 
     -K
 
@@ -31,5 +31,5 @@ To run play against a specific number of hosts use --limit with comma(,) as host
 
 To override the default user defined in your hosts.yml use either:
   
-    -e "ansible_user=youruser"" 
+    -e "ansible_user=your_chosen_user"" 
     
