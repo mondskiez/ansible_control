@@ -31,5 +31,6 @@ To run play against a specific number of hosts use --limit with comma(,) as host
 
 To override the default user defined in your hosts.yml use either:
   
-    -e "ansible_user=your_chosen_user"" 
-    
+    -e "ansible_user=your_chosen_user"
+
+Cheers and Enjoy.
