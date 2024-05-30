@@ -15,6 +15,9 @@ Edit the file to your desired settings and run:
 
 Take note of the trailing commands after the play:
 
-1. -K ### to run the play with the sudo password of the server defined in hosts.yml 
-2. --limit 'hostname1,hostname2,hostname3' ### to run the playbook against a specified number of hosts only
-3. -e "ansible_user=youruser" ### to override the default ansible_user defined in hosts.yml
+1. -K 
+"to run the play with the sudo password of the server defined in hosts.yml"
+2. --limit 'hostname1,hostname2,hostname3' 
+"to run the playbook against a specified number of hosts only"
+3. -e "ansible_user=youruser" 
+"to override the default ansible_user defined in hosts.yml"
