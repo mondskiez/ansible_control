@@ -1,9 +1,9 @@
 # ansible_control
 This is my own Ansible deployment for Ubuntu Server servers
 
-Firstly, modify your host.yml
+Firstly, modify the host.yml to your preferred structure
 
-1. ~/ansible_control/hosts.yaml
+    ansible_control/hosts.yaml
 
 Base-server settings to install follows: To use open:
 
