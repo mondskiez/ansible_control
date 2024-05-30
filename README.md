@@ -1,7 +1,7 @@
 # ansible_control
 This is my own Ansible deployment for Ubuntu Server servers
 
-Firstly, modify the host.yml to your preferred structure
+First modify the host.yml to your preferred structure.
 
     ansible_control/hosts.yml
 
