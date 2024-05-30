@@ -2,9 +2,13 @@
 
 - hosts: all
   become: true
+  vars:
+    cl_desired_time: 720
+    ### 720 is in minutes, ergo 12 hours
+    
   tasks:
 
-  - include_tasks: apt-update.yml
+#  - include_tasks: apt-upgrade.yml
   - include_tasks: livepatch.yml
 #  - include_tasks: 3-enable-ufw.yml
 #  - include_tasks: 4-secure-ssh.yml
