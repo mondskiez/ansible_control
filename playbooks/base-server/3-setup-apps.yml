@@ -14,7 +14,8 @@
           - zsh
           - zsh-syntax-highlighting
           - powerline
-          - fonts-powerline 
+          - fonts-powerline
+          - snapd
         state: latest
 
 ### this step is only for me coz I deploy docker Pi-Hole on all my servers
