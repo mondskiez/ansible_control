@@ -5,9 +5,9 @@ Firstly, modify the host.yml to your preferred structure
 
     ansible_control/hosts.yml
 
-Base-server plays come from 0-main.yml file
+Base server installation come from 0-main.yml file
 
-    playbook/base-server/edit 0-main.yml # to enable your desired output
+    playbooks/base-server/0-main.yml
 
 Edit the file to your desired settings and run:
 
