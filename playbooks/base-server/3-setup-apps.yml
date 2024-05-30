@@ -18,7 +18,8 @@
         state: latest
 
 ### this step is only for me coz I deploy docker Pi-Hole on all my servers
-### by default Port 53 will be used by systemd
+### PiHole need exclusive use of Port 53
+### By default Port 53 will be used by systemd
     - name: Check what is using Port 53
       shell:
         cmd: "sudo lsof -i:53 | awk 'FNR==2 {print $1}'"
@@ -53,26 +54,14 @@
     - name: change morty default shell to ZSH
       command: usermod -s /usr/bin/zsh {{ user_name }}
 
-    - name: Create omz_zsh path
-      file:
-        dest: "{{ omz_zsh_path}}"
-        state: absent
-    
-    - name: Create omz_auto_path
-      file:
-        dest: "{{ omz_auto_path }}"
-        state: absent
+    #     cmd: "git config --global --add safe.directory /home/morty/.oh-my-zsh"
 
-    - name: Create git config --global --add safe.directory
-      shell:
-        cmd: "git config --global --add safe.directory /home/morty/.oh-my-zsh"
-
-    - name: Cloning oh-my-zsh repo
+    - name: Cloning github.com/robbyrussel/oh-my-zsh.git repo
       git:
         repo: https://github.com/robbyrussell/oh-my-zsh.git
         dest: "{{ omz_zsh_path }}"
 
-    - name: Cloning zsh-autosuggestions repo
+    - name: Cloning github.com/zsh-users/zsh-autosuggestions repo
       git:
         repo: https://github.com/zsh-users/zsh-autosuggestions
         dest: "{{ omz_auto_path }}"
@@ -88,16 +77,16 @@
 ### creating an empty hidden .hushlogin to disable Ubuntu message-of-the-day
     - name: create .hushlogin file to disable MOTD
       copy:
-        dest: "{{ user_home }}.hushlogin"
+        dest: "{{ omz_install_path }}.hushlogin"
         content: |
 
         owner: "{{ user_name }}"
         group: "{{ user_name }}"
 
 ### creating my desired .zshrc file with my preferred theme, plugins and aliases already incorporated
-    - name: "Creating a .zshrc file"
+    - name: Creating a .zshrc file
       copy:
-        dest: "{{ user_home }}.zshrc"
+        dest: "{{ omz_install_path }}.zshrc"
         content: |
           ZSH_THEME="xiong-chiamiov-plus"
           plugins=(git sudo colored-man-pages zsh-autosuggestions)
@@ -111,7 +100,7 @@
           alias f2br="sudo docker exec -it fail2ban fail2ban-client restart"
         owner: "{{ user_name }}"
         group: "{{ user_name }}"
-  
+
   ### source the .zshrc file above for changes to take effect
     - name: Run source to .zshrc to effect changes
-      shell: /usr/bin/zsh {{ user_home }}.zshrc
+      shell: /usr/bin/zsh {{ omz_install_path }}.zshrc
