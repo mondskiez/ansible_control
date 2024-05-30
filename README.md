@@ -1,5 +1,5 @@
 # ansible_control
-My Own Ansible Deployment
+My Own Ansible Ubuntu Server Deployment
 
 Firstly, modify your host.yml
 
