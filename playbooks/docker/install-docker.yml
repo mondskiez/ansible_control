@@ -85,3 +85,17 @@
       loop:
         - docker.service
         - containerd.service
+
+    - Name: Get Docker version
+      shell: docker version
+      register: dock_ver
+    
+    - Name: Get Docker Compose version
+      shell: docker compose version
+      register: dock_com_ver
+    
+    - Name: Showing version results for Docker and Docker Compose
+      Debug:
+        Msg:
+          - "{{ dock_ver }}"
+          - "{{ dock_com_ver }}"
