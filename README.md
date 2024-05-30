@@ -12,7 +12,7 @@ Base-server settings to install follows: To use open:
 
 run:
 
-[code]ansible-playbook playbook/base-server/0-main.yml -K --limit 'web5b,web7' -e "ansible_user=youruser"[/code]
+[block]ansible-playbook playbook/base-server/0-main.yml -K --limit 'web5b,web7' -e "ansible_user=youruser"[/block]
 
 Take note of the following ansible command line keys which you can add to the command above:
 
