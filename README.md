@@ -5,15 +5,15 @@ Firstly, modify the host.yml to your preferred structure
 
     ansible_control/hosts.yml
 
-Base server installation come from 0-main.yml file
+Base server playbook is at:
 
     playbooks/base-server/0-main.yml
 
-Server maintenance play come from 0-main.yml file
+Server maintenance playbook is at:
 
     playbooks/server-maintenance/0-main.yml
 
-Edit the 0-main.yml files and input your own settings then run:
+Edit the 0-main.yml files accordingly and run it like:
 
     ansible-playbook playbooks/base-server/0-main.yml -K --limit 'web5b,web7' -e "ansible_user=old_user"
 
