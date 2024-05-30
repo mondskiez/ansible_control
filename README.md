@@ -23,7 +23,7 @@ To run play with sudo password of the server defined in hosts.yml use either:
 
 To run play against a specific number of hosts use:
 
-    --limit 'hostname1,hostname2,hostname3'" 
+    --limit 'hostname1,hostname2,hostname3'
 
 To override the default user defined in your hosts.yml use either:
 
