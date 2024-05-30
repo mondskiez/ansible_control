@@ -1,40 +1,41 @@
 ---
 
-    - name: Check to see if canonical-livepatch is installed
-      shell: which canonical-livepatch
-      register: file_status
-    
-    - name: canonical binary location found
-      debug:
-        msg: Binary is located at {{ file_status.stdout }}
-      when: file_status.rc == 0
 
-    - name: canonical binary location not found
-      debug:
-        msg: The livepatch binary does not exist"
-      when: file_status.rc == 1
+      - name: Check Canonical-LivePatch Binary exists
+        shell: which canonical-livepatch
+        register: lp_location
+        ignore_errors: yes
 
-    - name: Retrieving default check-interval time
-      shell:
-        cmd: "canonical-livepatch config | grep check"
-      register: cl_time_default
-      when: file_status.rc == 0
+      - name: Canonical-LivePatch binary exists
+        debug:
+          msg: "Binary is located at {{ lp_location.stdout }}"
+        when: lp_location.stdout
 
-    - name: Show default check-interval time
-      debug:
-        msg: Default {{ cl_time_default.stdout }}
-      when: cl_time_default.rc == 0
+      - name: Canonical-LivePatch binary does not exist
+        debug:
+          msg: "Binary is not found at /snap/bin/canonical-livepatch"
+        when: not lp_location.stdout
 
-    - name: Updating check-interval config to 720 minutes or 12 hours
-      command: sudo canonical-livepatch config check-interval=720
-      when: cl_time_default.rc == 0
+      - name: Installing Canonical-LivePatch
+        community.general.snap:
+          name: canonical-livepatch
+        register: lp_installed
+      
+      - name: Retrieving default check-interval time
+        shell: canonical-livepatch config | grep check | awk 'FNR == 1 {print $2}'
+        register: lp_time_before
 
-    - name: Retrieving updated check-interval time
-      shell:
-        cmd: "canonical-livepatch config | grep check"
-      register: cl_time_updated
+      - name: Updating check-interval config to desired time
+        command: canonical-livepatch config check-interval={{ cl_desired_time }}
+        register: lp_desired_time
 
-    - name: Show updated check-interval time
-      debug:
-        msg: Updated {{ cl_time_updated.stdout }}
-      when: cl_time_updated.rc == 0
+      - name: Retrieving updated check-interval time
+        shell:
+          cmd: canonical-livepatch config | grep check | awk 'FNR == 1 {print $2}'
+        register: cl_time_after
+
+      - name: Compare check-interval times
+        debug:
+          msg: 
+          - "Canonical-LivePatch check-interval time before: {{ lp_time_before.stdout }}" 
+          - "Canonical-LivePatch check-interval time after: {{ cl_time_after.stdout }}"
