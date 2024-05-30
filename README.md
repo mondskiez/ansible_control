@@ -1,9 +1,13 @@
 # ansible_control
 This is my own Ansible deployment for Ubuntu Server servers
 
-First modify the host.yml to your preferred structure.
+First, modify the host.yml to your preferred structure.
 
     ansible_control/hosts.yml
+
+Second, setup your inventory path by editing the file.
+
+    ansible.config
 
 Base server playbook is at:
 
