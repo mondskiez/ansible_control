@@ -3,7 +3,7 @@ This is my own Ansible deployment for Ubuntu Server servers
 
 Firstly, modify the host.yml to your preferred structure
 
-    ansible_control/hosts.yaml
+    ansible_control/hosts.yml
 
 Base-server settings to install follows: To use open:
 
