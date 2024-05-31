@@ -1,10 +1,10 @@
-# Deploy Ubuntu Servers with Ansible
+# :computer: Deploy Ubuntu Servers with Ansible
 
 This is my own Ansible deployment for <strong><ins>`Ubuntu Servers`</ins></strong>
 
 Deploy one today from https://ubuntu.com/download/server
 
-# Prerequisites :white_check_mark:
+# :white_check_mark: Prerequisites 
 
 Existing Ubuntu Server with user with sudo privilegdes and OpenSSH server enabled
 
@@ -35,7 +35,7 @@ cat C:\Users\youruser/.ssh/yournewkey.pub | ssh -p 22 remoteuser@remote-server-i
 $ -ssh-copy-id ~/.ssh/yournewkey remoteuser@remote-server-ip
 ```
 
-# Setting up the Inventory and ansible.cfg :heavy_check_mark:
+# :heavy_check_mark: Setting up the Inventory and ansible.cfg 
 
 First, setup your inventory by editing the file
 
@@ -45,7 +45,7 @@ Second, configure your ansible config file
   
   * ansible_control/<strong>*`ansible.config`*</strong>
 
-# Running the Play :running:
+# :running: Running the Play 
 
 From your terminal type:
 
@@ -53,7 +53,7 @@ From your terminal type:
 ansible-playbook run.yml -K --limit 'remote-server1,remote-server2' -e 'ansible_user=remoteuser'
 ```
 
-# Notes :hash:
+# :hash: Notes 
 
 To run play with sudo password of remote-user add:
 
