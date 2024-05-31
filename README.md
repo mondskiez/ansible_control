@@ -80,7 +80,7 @@ To override the default user defined in your hosts.yml use:
 -e "ansible_user=your_chosen_user"
 ```
 
-To string multiple plays use the operator
+To string multiple plays use the bash logical operator of 
 
 ```bash
 &&
