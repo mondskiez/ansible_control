@@ -1,10 +1,14 @@
 # ansible_control
+
+Inline-style: 
+![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 1")
+
 This is my own Ansible deployment for <strong><ins>Ubuntu Server</ins></strong> servers
 
 First, setup your infrastructure by modifying the <samp>hosts.yml</samp> file.
   > ansible_control/hosts.yml
 
-Second, setup your inventory and setup its path by editing the <em>ansible.config</em> file.
+Second, setup your inventory and its path by editing the <em>ansible.config</em> file.
   > ansible_control/ansible.config
 
 Base server playbook is at:
