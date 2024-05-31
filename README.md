@@ -8,10 +8,10 @@ First, setup your infrastructure by editing the file
 
 Path | File
 
-  > ansible_control/<strong><em>hosts.yml</em></strong>
+  > ansible_control/<strong><em>`hosts.yml`</em></strong>
 
 Second, setup your inventory by editing the file
-  > ansible_control/<strong><em>ansible.config</em></strong>
+  > ansible_control/<strong><em>`ansible.config`</em></strong>
 
 Base server playbook location
   > playbooks/base-server/0-main.yml
