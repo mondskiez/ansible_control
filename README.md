@@ -29,12 +29,12 @@ C:\Users\YourUser/.ssh/yournewkey
 
 :ballot_box_with_check: D. Copy your ssh-key to the remote server
 
-1. Windows:
+1. :arrow_forward: Windows:
 
 ```rust
 cat C:\Users\youruser/.ssh/yournewkey.pub | ssh -p 22 remoteuser@remote-server-ip "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys" 
 ```
-2. Linux/MacOs:
+2. :arrow_forward: Linux/MacOs:
 
 ```rust
 $ -ssh-copy-id ~/.ssh/yournewkey remoteuser@remote-server-ip
@@ -44,11 +44,11 @@ $ -ssh-copy-id ~/.ssh/yournewkey remoteuser@remote-server-ip
 
 First, setup your inventory by editing the file
 
-  * ansible_control/<strong>*`hosts.yml`*</strong>
+  * :arrow_forward: ansible_control/<strong>*`hosts.yml`*</strong>
 
 Second, configure your ansible config file
   
-  * ansible_control/<strong>*`ansible.config`*</strong>
+  * :arrow_forward: ansible_control/<strong>*`ansible.config`*</strong>
 
 
 
@@ -83,7 +83,7 @@ To override the default user defined in the hosts.yml with a remote-user from a 
 Example play with all arguments added:
 
 ```rust
--- ansible-playbook --limit 'host4,domain3,remote7' -e 'ansible_user=remote-user'
+ansible-playbook --limit 'host4,domain3,remote7' -e 'ansible_user=remote-user -K'
 ```
 
 # :beers: Enjoy.
