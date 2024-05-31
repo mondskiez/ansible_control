@@ -14,7 +14,7 @@ a. Create an ssh-key pair on Windows or Linux/MacOS
 $ ssh-keygen -t ed25519 -C "add your comment for this key"
 ```
 
-b. Specify the location of the key to be generated so you can put a name for quick reference
+b. SSH-keygen will ask for a location to save the file, remember to replace the resulting id_*** to something memorable like
 
 ```bash
 C:\Users\YourUser/.ssh/yourkey
