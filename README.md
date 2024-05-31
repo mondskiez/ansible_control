@@ -1,7 +1,5 @@
 # Deploy Ubuntu Servers with Ansible
 
-![alt text](https://github.com/ansible/lorusts/blob/main/vscode-ansible-lorust/vscode-ansible.png "Lorust Title Text 1")
-
 This is my own Ansible deployment for <strong><ins>`Ubuntu Servers`</ins></strong>
 
 Deploy one today from https://ubuntu.com/download/server
@@ -34,7 +32,7 @@ cat C:\Users\youruser/.ssh/yournewkey.pub | ssh -p 22 remoteuser@remote-server-i
 2. Linux/MacOs:
 
 ```rust
-$ -ssh-copy-id ~/.ssh/yoursshkey user@server-ip
+$ -ssh-copy-id ~/.ssh/yournewkey remoteuser@remote-server-ip
 ```
 
 # Setting up the Inventory and ansible.cfg :heavy_check_mark:
