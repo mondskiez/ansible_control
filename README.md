@@ -2,29 +2,32 @@
 
 This is my own Ansible deployment for <strong><ins>`Ubuntu Servers`</ins></strong>
 
-Deploy one today from https://ubuntu.com/download/server
+Install Ansible https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html
+
+Get Ubuntu Server https://ubuntu.com/download/server
 
 # :white_check_mark: Prerequisites 
 
 Ansible installed on your Linux/MacOs machine
 
 Existing Ubuntu Server with OpenSSH enabled and a user with sudo privileges
-git
-   A. Create an ssh-key pair on Windows or Linux/MacOS
+
+
+A. Create an ssh-key pair on Windows or Linux/MacOS
 
 ```rust
 $ ssh-keygen -t ed25519 -C "add your comment for this key"
 ```
 
-   B. SSH-keygen will ask for a location to save the file, remember to replace the resulting id_*** to something memorable like
+B. SSH-keygen will ask for a location to save the file, remember to replace the resulting id_*** to something memorable like
 
 ```rust
 C:\Users\YourUser/.ssh/yournewkey
 ```
 
-   C. The ssh-keygen will then generate your key pair to the location you specified using the filename your inputted in the location.
+C. The ssh-keygen will then generate your key pair to the location you specified using the filename your inputted in the location.
 
-   D. Copy your ssh-key to the remote server
+D. Copy your ssh-key to the remote server
 
 1. Windows:
 
@@ -47,12 +50,14 @@ Second, configure your ansible config file
   
   * ansible_control/<strong>*`ansible.config`*</strong>
 
+
+
 # :running: Running the Play 
 
 From your terminal type:
 
 ```rust
-ansible-playbook run.yml -K --limit 'remote-server1,remote-server2' -e 'ansible_user=remoteuser'
+ansible-playbook run.yml -K
 ```
 
 # :hash: Notes 
@@ -73,6 +78,12 @@ To override the default user defined in the hosts.yml with a remote-user from a 
 
 ```rust
 -e "ansible_user=remote-user"
+```
+
+Example play with all arguments added:
+
+```rust
+-- ansible-playbook --limit 'host4,domain3,remote7' -e 'ansible_user=remote-user'
 ```
 
 # :beers: Enjoy.
