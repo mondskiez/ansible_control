@@ -35,7 +35,7 @@ cat C:\Users\youruser/.ssh/yourgenerated.pub | ssh -p 22 remoteuser@remote-serve
 $ -ssh-copy-id ~/.ssh/yoursshkey user@server-ip
 ```
 
-# Setup your Inventory
+# Setting up the Inventory and ansible.cfg :heavy_check_mark:
 
 First, setup your inventory by editing the file
 
