@@ -5,7 +5,6 @@
 This is my own Ansible deployment for <strong><ins>`Ubuntu Server`</ins></strong> servers
 
 # Setup your Hosts and Inventory
----
 
 First, setup your infrastructure by editing the file
 
@@ -16,7 +15,6 @@ Second, setup your inventory by editing the file
   * ansible_control/<strong>*`ansible.config`*</strong>
 
 # Play Locations
----
 
 Playbooks:
   * playbooks/<strong>*`base-server`*</strong>
@@ -26,17 +24,14 @@ The main play is from the file
   * <strong>*`0-main.yml`*</strong>
 
 # Running the Play
----
 
 To run any task, edit the corresponding <strong>`0-main.yml`</strong> file and run:
 
----
 ```bash
 ansible-playbook playbooks/base-server/0-main.yml -K --limit 'web5b,web7' -e 'ansible_user=old_user'
 ```
 <em>The play above creates your account with all the vars stated inside the 0-main-hosts.yml</em>
-
----  
+  
 ```bash
 ansible-playbook playbooks/server-maintenance/0-mail.yml -K --limit 'host1,host2,host3' -e 'ansible_user=new_user'
 ```
@@ -44,7 +39,6 @@ ansible-playbook playbooks/server-maintenance/0-mail.yml -K --limit 'host1,host2
 
 Run the 2 plays consecutively with the && operator:
 
----
 ```bash
 ansible-playbook playbook/base-server/0-main.yml playbook/server-maintenance/0-main.yml -K --limit 'host3,host6' -e "ansible_user=somebody" <strong><em>&&</em></strong> ansible-playbook playbooks/server-maintenance/0-main.yml --limit 'host1,host2,host' -e "ansible_user=morty" -e "ansible_ssh_port=22222"
 ```
@@ -58,7 +52,6 @@ ansible-playbook playbook/base-server/0-main.yml playbook/server-maintenance/0-m
       After the first play, the second play will run because of the && operator in the original
       command.  Therefore, you MUST specify the NEW ssh port number in the command, else it will
       fail.
-
 
 Notes: 
 
