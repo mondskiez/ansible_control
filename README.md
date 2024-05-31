@@ -6,17 +6,22 @@ This is my own Ansible deployment for <strong><ins>`Ubuntu Servers`</ins></stron
 
 # Prerequisites
 
-Existing Ubuntu Server with a user with sudo privilegdes
+Existing Ubuntu Server with an existing user with sudo privilegdes
 
 a. Create an ssh-key pair on Windows or Linux/MacOS
 
 ```bash
-$ ssh-keygen -t ed25519 -C "your comment"
+$ ssh-keygen -t ed25519 -C "your comment" for this key"
 ```
 
-Be sure to specify a name for your key for easy identification
+b. Specify the location of the key to be generated so you can put a name for quick reference
 
-b. Copy over your ssh-key from
+```bash
+C:\Users\YourUser/.ssh/yourkey
+```
+
+c. The ssh-keygen will then generate your key pair to the location you specified using the filename your inputted in the location.
+c. Copy your ssh-key to the remote server
 
 1. Windows:
 
@@ -44,12 +49,12 @@ Second, configure your ansible config file
 From your terminal type:
 
 ```bash
-ansible-playbook run.yml -K --limit 'web5b,web7' -e 'ansible_user=old_user'
+ansible-playbook run.yml -K --limit 'remote-server1,remote-server2' -e 'ansible_user=remoteuser'
 ```
 
 <strong><ins>`Notes`*</ins></strong> 
 
-To run play with sudo password of user add:
+To run play with sudo password of remote-user add:
 
 ```bash
 -K
@@ -58,19 +63,13 @@ To run play with sudo password of user add:
 To run play against a specific number of hosts use below  with comma(,) separated  hostnames
 
 ```bash
---limit 'hostname1,hostname2,hostname3'
+--limit 'host4,domain3,remote7'
 ```
 
-To override the default user defined in your hosts.yml use:
+To override the default user defined in the hosts.yml with the remote-user from the remote-server:
 
 ```bash
--e "ansible_user=your_chosen_user"
-```
-
-To string multiple plays use the bash logical operator of 
-
-```bash
-&&
+-e "ansible_user=remote-user"
 ```
 
 :beers: and Enjoy.
