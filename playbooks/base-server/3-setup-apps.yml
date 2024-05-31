@@ -19,9 +19,9 @@
         state: latest
 
 ### Installing Canonical-Livepatch snap
-      - name: Installing Canonical-LivePatch
-        community.general.snap:
-          name: canonical-livepatch
+    - name: Installing Canonical-LivePatch
+      community.general.snap:
+        name: canonical-livepatch
 
 ### this step is only for me coz I deploy docker Pi-Hole on all my servers
 ### PiHole need exclusive use of Port 53
