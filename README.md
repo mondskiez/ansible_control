@@ -63,15 +63,23 @@ ansible-playbook playbook/base-server/0-main.yml playbook/server-maintenance/0-m
 Notes: 
 
 To run play with sudo password of user add:
-  * -K
+```bash
+-K
+```
 
 To run play against a specific number of hosts use below  with comma(,) separated  hostnames
-  * --limit 'hostname1,hostname2,hostname3'
+```bash
+--limit 'hostname1,hostname2,hostname3'
+```
 
 To override the default user defined in your hosts.yml use:
-  * -e "ansible_user=your_chosen_user"
+```bash
+-e "ansible_user=your_chosen_user"
+```
 
-To string multiple plays
-  * use the && operator between playbooks
+To string multiple plays use the operator
+```bash
+&&
+```
 
-Cheers and Enjoy.
+::beers:: and Enjoy.
