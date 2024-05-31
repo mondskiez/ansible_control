@@ -12,13 +12,13 @@ Existing Ubuntu Server with user with sudo privilegdes and OpenSSH server enable
 
    A. Create an ssh-key pair on Windows or Linux/MacOS
 
-```bash
+```go
 $ ssh-keygen -t ed25519 -C "add your comment for this key"
 ```
 
    B. SSH-keygen will ask for a location to save the file, remember to replace the resulting id_*** to something memorable like
 
-```rust
+```go
 C:\Users\YourUser/.ssh/yournewkey
 ```
 
@@ -28,12 +28,12 @@ C:\Users\YourUser/.ssh/yournewkey
 
 1. Windows:
 
-```rust
+```go
 cat C:\Users\youruser/.ssh/yournewkey.pub | ssh -p 22 remoteuser@remote-server-ip "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys" 
 ```
 2. Linux/MacOs:
 
-```bash
+```go
 $ -ssh-copy-id ~/.ssh/yoursshkey user@server-ip
 ```
 
@@ -51,7 +51,7 @@ Second, configure your ansible config file
 
 From your terminal type:
 
-```bash
+```go
 ansible-playbook run.yml -K --limit 'remote-server1,remote-server2' -e 'ansible_user=remoteuser'
 ```
 
@@ -59,19 +59,19 @@ ansible-playbook run.yml -K --limit 'remote-server1,remote-server2' -e 'ansible_
 
 To run play with sudo password of remote-user add:
 
-```bash
+```go
 -K
 ```
 
 To run play against a specific number of hosts use below  with comma(,) separated  hostnames
 
-```bash
+```go
 --limit 'host4,domain3,remote7'
 ```
 
 To override the default user defined in the hosts.yml with a remote-user from a remote-server:
 
-```bash
+```go
 -e "ansible_user=remote-user"
 ```
 
