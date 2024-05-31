@@ -1,24 +1,24 @@
 # ansible_control
-This is my own Ansible deployment for Ubuntu Server servers
+This is my own Ansible deployment for <strong>Ubuntu Server</strong> servers
 
-First, modify the host.yml to your preferred structure.
-  * ansible_control/hosts.yml
+First, setup your infrastructure by modifying the hosts.yml file.
+  > ansible_control/hosts.yml
 
-Second, setup your inventory path by editing the file.
-  * ansible_control/ansible.config
+Second, setup your inventory and setup its path by editing the ansible.config file.
+  > ansible_control/ansible.config
 
 Base server playbook is at:
-  * playbooks/base-server/0-main.yml
+  > playbooks/base-server/0-main.yml
 
 Server maintenance playbook is at:
-  * playbooks/server-maintenance/0-main.yml
+  > playbooks/server-maintenance/0-main.yml
 
 To run a specific task, edit the corresponding 0-main.yml play file and run:
-  * ansible-playbook playbooks/base-server/0-main.yml -K --limit 'web5b,web7' -e "ansible_user=old_user"
+  > ansible-playbook playbooks/base-server/0-main.yml -K --limit 'web5b,web7' -e "ansible_user=old_user"
 
       * The play above establishes your desired user on default SSH port 22 using the ansible_user found in your hosts.yml
   
-  * ansible-playbook playbooks/server-maintenance/0-mail.yml -K --limit 'host1,host2,host3' -e "ansible_user=new_user"
+  > ansible-playbook playbooks/server-maintenance/0-mail.yml -K --limit 'host1,host2,host3' -e "ansible_user=new_user"
   
       * The play above is executed by specifying your user that you created earlier with the modified SSH port that ran in the above play
 
