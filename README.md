@@ -4,10 +4,10 @@
 
 This is my own Ansible deployment for <strong><ins>Ubuntu Server</ins></strong> servers
 
-First, setup your infrastructure by modifying the <samp>hosts.yml</samp> file.
+First, setup your infrastructure by modifying <samp>hosts.yml</samp> from
   > ansible_control/hosts.yml
 
-Second, setup your inventory and its path by editing the <em>ansible.config</em> file.
+Second, setup your inventory and its path by editing <em>ansible.config</em> from
   > ansible_control/ansible.config
 
 Base server playbook is at:
@@ -19,15 +19,15 @@ Server maintenance playbook is at:
 To run a specific task, edit the corresponding 0-main.yml play file and run:
   > ansible-playbook playbooks/base-server/0-main.yml -K --limit 'web5b,web7' -e "ansible_user=old_user"
 
-      * The play above establishes your desired user on default SSH port 22 using the ansible_user found in your hosts.yml
+<em>The play above establishes your desired user on default SSH port 22 using the ansible_user found in your hosts.yml</em>
   
   > ansible-playbook playbooks/server-maintenance/0-mail.yml -K --limit 'host1,host2,host3' -e "ansible_user=new_user"
   
-      * The play above is executed by specifying your user that you created earlier with the modified SSH port that ran in the above play
+<em>The play above is executed by specifying your user that you created earlier with the modified SSH port that ran in the above play</em>
 
 Run the 2 plays consecutively with the && operator:
 
-  * ansible-playbook playbook/base-server/0-main.yml playbook/server-maintenance/0-main.yml -K --limit 'host3,host6' -e "ansible_user=somebody" && ansible-playbook playbooks/server-maintenance/0-main.yml --limit 'host1,host2,host' -e "ansible_user=morty" -e "ansible_ssh_port=22222"
+  * ansible-playbook playbook/base-server/0-main.yml playbook/server-maintenance/0-main.yml -K --limit 'host3,host6' -e "ansible_user=somebody" <strong><em>&&</em></strong> ansible-playbook playbooks/server-maintenance/0-main.yml --limit 'host1,host2,host' -e "ansible_user=morty" -e "ansible_ssh_port=22222"
 
 Explaining the play above:
 
