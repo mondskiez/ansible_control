@@ -21,13 +21,13 @@
 
 ### the following .yml files will be executed consecutively
 ### to disable a task simply comment out the line
-  - include_tasks: playbooks/base-server/1-create-hostname.yml
-  - include_tasks: playbooks/base-server/2-create-user.yml
-  - include_tasks: playbooks/base-server/3-setup-apps.yml
-  - include_tasks: playbooks/base-server/4-enable-ufw.yml
-  - include_tasks: playbooks/base-server/5-secure-ssh.yml
+  - include_tasks: tasks/base-server/1-create-hostname.yml
+  - include_tasks: tasks/base-server/2-create-user.yml
+  - include_tasks: tasks/base-server/3-setup-apps.yml
+  - include_tasks: tasks/base-server/4-enable-ufw.yml
+  - include_tasks: tasks/base-server/5-secure-ssh.yml
 
 ### Server Maintenance
 
-  - include_tasks: playbooks/server-maintenance/apt-upgrade.yml
-  - include_tasks: playbooks/server-maintenance/livepatch.yml
+  - include_tasks: tasks/server-maintenance/apt-upgrade.yml
+  - include_tasks: tasks/server-maintenance/livepatch.yml
