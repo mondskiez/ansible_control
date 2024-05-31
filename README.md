@@ -8,7 +8,7 @@ This is my own Ansible deployment of <strong><ins>`Ubuntu Server`</ins></strong>
 
 Existing Ubuntu Server with a user with sudo privilegdes
 
-1. Create an ssh-key pair on Windows or Linux/MacOS
+a. Create an ssh-key pair on Windows or Linux/MacOS
 
 ```bash
 $ ssh-keygen -t ed25519 -C "your comment"
@@ -16,14 +16,14 @@ $ ssh-keygen -t ed25519 -C "your comment"
 
 Be sure to specify a name for your key for easy identification
 
-2. Copy over your ssh-key from
+b. Copy over your ssh-key from
 
-  Windows:
+1. Windows:
 
 ```bash
 cat C:\Users\youruser/.ssh/yourgenerated.pub | ssh -p 22 remoteuser@remote-server-ip "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys" 
 ```
-  Linux/MacOs:
+2. Linux/MacOs:
 
 ```bash
 $ -ssh-copy-id ~/.ssh/yoursshkey user@server-ip
