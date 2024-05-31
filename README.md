@@ -13,28 +13,28 @@ Ansible installed on your Linux/MacOs machine
 Existing Ubuntu Server with OpenSSH enabled and a user with sudo privileges
 
 
-:ballot_box_with_check: A. Create an ssh-key pair on Windows or Linux/MacOS
+:arrow_forward" A. Create an ssh-key pair on Windows or Linux/MacOS
 
 ```rust
 $ ssh-keygen -t ed25519 -C "add your comment for this key"
 ```
 
-:ballot_box_with_check: B. SSH-keygen will ask for a location to save the file, remember to replace the resulting id_*** to something memorable like
+:arrow_forward: B. SSH-keygen will ask for a location to save the file, remember to replace the resulting id_*** to something memorable like
 
 ```rust
 C:\Users\YourUser/.ssh/yournewkey
 ```
 
-:ballot_box_with_check: C. The ssh-keygen will then generate your key pair to the location you specified using the filename your inputted in the location.
+:arrow_forward" C. The ssh-keygen will then generate your key pair to the location you specified using the filename your inputted in the location.
+git 
+:arrow_forward" D. Copy your ssh-key to the remote server
 
-:ballot_box_with_check: D. Copy your ssh-key to the remote server
-
-1. :arrow_forward: Windows:
+1. :small_orange_diamond: Windows:
 
 ```rust
 cat C:\Users\youruser/.ssh/yournewkey.pub | ssh -p 22 remoteuser@remote-server-ip "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys" 
 ```
-2. :arrow_forward: Linux/MacOs:
+2. :small_orange_diamond: Linux/MacOs:
 
 ```rust
 $ -ssh-copy-id ~/.ssh/yournewkey remoteuser@remote-server-ip
@@ -44,11 +44,11 @@ $ -ssh-copy-id ~/.ssh/yournewkey remoteuser@remote-server-ip
 
 First, setup your inventory by editing the file
 
-  * :arrow_forward: ansible_control/<strong>*`hosts.yml`*</strong>
+  * :arrow_forward" ansible_control/<strong>*`hosts.yml`*</strong>
 
 Second, configure your ansible config file
   
-  * :arrow_forward: ansible_control/<strong>*`ansible.config`*</strong>
+  * :arrow_forward" ansible_control/<strong>*`ansible.config`*</strong>
 
 
 
