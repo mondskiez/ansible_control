@@ -8,7 +8,7 @@ Deploy one today from https://ubuntu.com/download/server
 
 Ansible installed on your Linux/MacOs machine
 
-Existing Ubuntu Server with user with sudo privilegdes and OpenSSH server enabled
+Existing Ubuntu Server with OpenSSH enabled and a user with sudo privileges
 
    A. Create an ssh-key pair on Windows or Linux/MacOS
 
