@@ -4,11 +4,11 @@
 
 This is my own Ansible deployment for <strong><ins>Ubuntu Server</ins></strong> servers
 
-First, setup your infrastructure by modifying <em>hosts.yml</em> from
-  > ansible_control/hosts.yml
+First, setup your infrastructure by editing the file
+  > ansible_control/<strong>hosts.yml</strong>
 
-Second, setup your inventory and its path by editing <em>ansible.config</em> from
-  > ansible_control/ansible.config
+Second, setup your inventory by editing the file
+  > ansible_control/</strong>ansible.config</strong>
 
 Base server playbook location
   > playbooks/base-server/0-main.yml
@@ -21,7 +21,7 @@ To run a specific task, edit the corresponding <em>0-main.yml</em> file and run:
 
 <em>The play above establishes your desired user on default SSH port 22 using the ansible_user found in your hosts.yml</em>
   
-  > ansible-playbook playbooks/server-maintenance/0-mail.yml -K --limit 'host1,host2,host3' -e "ansible_user=new_user"
+  > <strong>ansible-playbook playbooks/server-maintenance/0-mail.yml -K --limit 'host1,host2,host3' -e "ansible_user=new_user"</strong>
   
 <em>The play above is executed by specifying your user that you created earlier with the modified SSH port that ran in the above play</em>
 
