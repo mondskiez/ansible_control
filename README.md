@@ -9,7 +9,7 @@ Deploy one today from https://ubuntu.com/download/server
 Ansible installed on your Linux/MacOs machine
 
 Existing Ubuntu Server with OpenSSH enabled and a user with sudo privileges
-
+git
    A. Create an ssh-key pair on Windows or Linux/MacOS
 
 ```rust
@@ -76,3 +76,5 @@ To override the default user defined in the hosts.yml with a remote-user from a 
 ```
 
 # :beers: Enjoy.
+
+Feel free to modify all the plays to meet your needs.
