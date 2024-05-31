@@ -13,20 +13,23 @@ Path | File
 Second, setup your inventory by editing the file
   > ansible_control/<strong><em>`ansible.config`</em></strong>
 
-Base server playbook location
-  > playbooks/base-server/0-main.yml
+Base server playbook folder
+  > playbooks/base-server
 
-Server maintenance playbook location:
-  > playbooks/server-maintenance/0-main.yml
+Server maintenance playbook:
+  > playbooks/server-maintenance
+
+The main play from either folder is:
+  > <strong><em>`0-main.yml`</em></strong>
 
 To run a specific task, edit the corresponding <em>0-main.yml</em> file and run:
-  > <strong>ansible-playbook playbooks/base-server/0-main.yml -K --limit 'web5b,web7' -e "ansible_user=old_user"</strong>
+  > ansible-playbook playbooks/base-server/0-main.yml <strong><em>-K --limit 'web5b,web7' -e "ansible_user=old_user"</em></strong>
 
-<em>The play above establishes your desired user on default SSH port 22 using the ansible_user found in your hosts.yml</em>
+<center><em>The play above establishes your desired user on default SSH port 22 using the ansible_user found in your hosts.yml</em></center>
   
-  > <strong>ansible-playbook playbooks/server-maintenance/0-mail.yml -K --limit 'host1,host2,host3' -e "ansible_user=new_user"</strong>
+  > ansible-playbook playbooks/server-maintenance/0-mail.yml <strong><em>-K --limit 'host1,host2,host3' -e "ansible_user=new_user"</em></strong>
   
-<em>The play above is executed by specifying your user that you created earlier with the modified SSH port that ran in the above play</em>
+<center><em>The play above is executed by specifying your user that you created earlier with the modified SSH port that ran in the above play</em></center>
 
 Run the 2 plays consecutively with the && operator:
 
