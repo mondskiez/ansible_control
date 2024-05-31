@@ -1,4 +1,4 @@
-# ansible_control
+# Deploy Ubuntu Servers with Ansible
 
 ![alt text](https://github.com/ansible/logos/blob/main/vscode-ansible-logo/vscode-ansible.png "Logo Title Text 1")
 
@@ -18,11 +18,11 @@ Second, setup your inventory by editing the file
 # Play Locations
 ---
 
-Playbook locations:
+Playbooks:
   * playbooks/<strong>*`base-server`*</strong>
   * playbooks/<strong>*`server-maintenance`*</strong>
 
-The main play from either folder is:
+The main play is from the file
   * <strong>*`0-main.yml`*</strong>
 
 # Running the Play
@@ -31,15 +31,15 @@ The main play from either folder is:
 To run a specific task, edit the corresponding <strong>*`0-main.yml`*</strong> file and run:
 
 
-```bash
-ansible-playbook playbooks/base-server/0-main.yml <strong><em>-K --limit 'web5b,web7' -e "ansible_user=old_user"</em></strong>
-```
+    ```bash
+    ansible-playbook playbooks/base-server/0-main.yml <strong><em>-K --limit 'web5b,web7' -e "ansible_user=old_user"</em></strong>
+    ```
 
 <em>The play above establishes your desired user on default SSH port 22 using the ansible_user found in your hosts.yml</em>
   
-```bash
-ansible-playbook playbooks/server-maintenance/0-mail.yml <strong><em>-K --limit 'host1,host2,host3' -e "ansible_user=new_user"</em></strong>
-```
+    ```bash
+    ansible-playbook playbooks/server-maintenance/0-mail.yml <strong><em>-K --limit 'host1,host2,host3' -e "ansible_user=new_user"</em></strong>
+    ```
 
 <em>The play above is executed by specifying your user that you created earlier with the modified SSH port that ran in the above play</em>
 
