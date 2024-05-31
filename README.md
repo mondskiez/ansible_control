@@ -44,17 +44,17 @@ $ -ssh-copy-id ~/.ssh/yournewkey remoteuser@remote-server-ip
 
 First, setup your inventory by editing the file
 
-  * :arrow_forward" ansible_control/<strong>*`hosts.yml`*</strong>
+  * :arrow_forward: ansible_control/<strong>*`hosts.yml`*</strong>
 
 Second, configure your ansible config file
   
-  * :arrow_forward" ansible_control/<strong>*`ansible.config`*</strong>
+  * :arrow_forward: ansible_control/<strong>*`ansible.config`*</strong>
 
 
 
 # :running: Running the Play 
 
-From your terminal type:
+:arrow_forward: From PowerShell or Windows Terminal type:
 
 ```rust
 ansible-playbook run.yml -K
@@ -62,7 +62,7 @@ ansible-playbook run.yml -K
 
 # :hash: Notes 
 
-To run play with sudo password of remote-user add:
+:arrow_forward: To run play with sudo password of remote-user add:
 
 ```rust
 -K
