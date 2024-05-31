@@ -6,12 +6,12 @@ This is my own Ansible deployment of <strong><ins>`Ubuntu Server`</ins></strong>
 
 # Prerequisites
 
-> Existing Ubuntu Server with a user with sudo privilegdes
-> Create an ssh-key pair thru
+Existing Ubuntu Server with a user with sudo privilegdes
+Create an ssh-key pair thru
     Windows:
       - 
     Linux/MacOS:
-      - 
+      - ssh-key 
 > Copy over your ssh-key thru
     Windows:
       - 
