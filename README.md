@@ -73,4 +73,4 @@ To override the default user defined in the hosts.yml with a remote-user from a 
 -e "ansible_user=remote-user"
 ```
 
-:beers: and Enjoy.
+# :beers: Enjoy.
