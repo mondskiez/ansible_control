@@ -80,7 +80,7 @@ ansible-playbook run.yml -K
 -e "ansible_user=remote-user"
 ```
 
-Example play with all arguments added:
+:hash: Example play with all arguments added:
 
 ```rust
 ansible-playbook --limit 'host4,domain3,remote7' -e 'ansible_user=remote-user -K'
