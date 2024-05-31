@@ -4,7 +4,7 @@
 
 This is my own Ansible deployment for <strong><ins>`Ubuntu Servers`</ins></strong>
 
-# Prerequisites
+# Prerequisites :white_check_mark:
 
 Existing Ubuntu Server with an existing user with sudo privilegdes
 
