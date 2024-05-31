@@ -3,7 +3,7 @@
 ### the base-server install starts from this play
 ### change the user morty to your desired username
 - hosts: all
-  become: true
+  become: yes
   vars:
     desired_hostname: mondskiez-test
     tz: Asia/Manila
