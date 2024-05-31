@@ -2,7 +2,9 @@
 
 ![alt text](https://github.com/ansible/logos/blob/main/vscode-ansible-logo/vscode-ansible.png "Logo Title Text 1")
 
-This is my own Ansible deployment for [<strong><ins>`Ubuntu Servers`</ins></strong>]: https://ubuntu.com/download/server
+This is my own Ansible deployment for <strong><ins>`Ubuntu Servers`</ins></strong>
+
+Deploy one today from https://ubuntu.com/download/server
 
 # Prerequisites :white_check_mark:
 
