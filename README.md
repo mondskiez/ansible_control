@@ -5,10 +5,10 @@
 This is my own Ansible deployment for <strong><ins>Ubuntu Server</ins></strong> servers
 
 First, setup your infrastructure by editing the file
-  > ansible_control/<strong>hosts.yml</strong>
+  > ansible_control/<strong><em>hosts.yml</em></strong>
 
 Second, setup your inventory by editing the file
-  > ansible_control/</strong>ansible.config</strong>
+  > ansible_control/<strong><em>ansible.config</em></strong>
 
 Base server playbook location
   > playbooks/base-server/0-main.yml
