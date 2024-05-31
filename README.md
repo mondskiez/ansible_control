@@ -3,19 +3,19 @@ This is my own Ansible deployment for Ubuntu Server servers
 
 First, modify the host.yml to your preferred structure.
 
-    ansible_control/hosts.yml
+  1. $ ansible_control/hosts.yml
 
 Second, setup your inventory path by editing the file.
 
-    ansible_control/ansible.config
+  1. $ ansible_control/ansible.config
 
 Base server playbook is at:
 
-    playbooks/base-server/0-main.yml
+  # playbooks/base-server/0-main.yml
 
 Server maintenance playbook is at:
 
-    playbooks/server-maintenance/0-main.yml
+  # playbooks/server-maintenance/0-main.yml
 
 To run a specific task, edit the corresponding 0-main.yml play file and run:
 
