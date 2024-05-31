@@ -8,20 +8,21 @@ This is my own Ansible deployment for <strong><ins>`Ubuntu Servers`</ins></stron
 
 Existing Ubuntu Server with an existing user with sudo privilegdes
 
-a. Create an ssh-key pair on Windows or Linux/MacOS
+...a. Create an ssh-key pair on Windows or Linux/MacOS
 
 ```bash
 $ ssh-keygen -t ed25519 -C "add your comment for this key"
 ```
 
-b. SSH-keygen will ask for a location to save the file, remember to replace the resulting id_*** to something memorable like
+...b. SSH-keygen will ask for a location to save the file, remember to replace the resulting id_*** to something memorable like
 
 ```bash
 C:\Users\YourUser/.ssh/yourkey
 ```
 
-c. The ssh-keygen will then generate your key pair to the location you specified using the filename your inputted in the location.
-c. Copy your ssh-key to the remote server
+...c. The ssh-keygen will then generate your key pair to the location you specified using the filename your inputted in the location.
+
+...d. Copy your ssh-key to the remote server
 
 1. Windows:
 
