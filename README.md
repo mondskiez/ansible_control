@@ -86,4 +86,4 @@ To string multiple plays use the bash logical operator of
 &&
 ```
 
-::beers:: and Enjoy.
+:beers: and Enjoy.
