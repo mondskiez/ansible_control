@@ -28,33 +28,33 @@ The main play is from the file
 # Running the Play
 ---
 
-To run a specific task, edit the corresponding <strong>`0-main.yml`</strong> file and run:
+To run any task, edit the corresponding <strong>`0-main.yml`</strong> file and run:
 
 ---
 ```bash
 ansible-playbook playbooks/base-server/0-main.yml -K --limit 'web5b,web7' -e 'ansible_user=old_user'
 ```
-<em>The play above establishes your desired user on default SSH port 22 using the ansible_user found in your hosts.yml</em>
+<em>The play above creates your account with all the vars stated inside the 0-main-hosts.yml</em>
 
 ---  
 ```bash
 ansible-playbook playbooks/server-maintenance/0-mail.yml -K --limit 'host1,host2,host3' -e 'ansible_user=new_user'
 ```
-<em>The play above is executed by specifying your user that you created earlier with the modified SSH port that ran in the above play</em>
+<em>The next play is executed by specifying your user that you created earlier with the modified SSH port that ran in the above play</em>
 
 Run the 2 plays consecutively with the && operator:
 
+---
 ```bash
 ansible-playbook playbook/base-server/0-main.yml playbook/server-maintenance/0-main.yml -K --limit 'host3,host6' -e "ansible_user=somebody" <strong><em>&&</em></strong> ansible-playbook playbooks/server-maintenance/0-main.yml --limit 'host1,host2,host' -e "ansible_user=morty" -e "ansible_ssh_port=22222"
 ```
 
-Explaining the play above:
+Explaining the consecutive play above:
 
-Executing the base-server/0-main.yml
-...The play above establishes your desired user on default SSH port 22 using the ansible_user found in your hosts.yml
+    > Executing `base-server/0-main.yml` creates your server user.  
+      Assume that a freshly deployed Ubuntu Server has its SSH port at 22. 
 
-Executive the server-maintenance/0-main.yml
-...The play above is executed by specifying your user that you created earlier with the modified SSH port that ran in the above play
+* Executing `server-maintenance/0-main.yml` will update your server package. Note that 
 
 Notes: 
 
