@@ -13,7 +13,7 @@ Ansible installed on your Linux/MacOs machine
 Existing Ubuntu Server with OpenSSH enabled and a user with sudo privileges
 
 
-:arrow_forward" A. Create an ssh-key pair on Windows or Linux/MacOS
+:arrow_forward: A. Create an ssh-key pair on Windows or Linux/MacOS
 
 ```rust
 $ ssh-keygen -t ed25519 -C "add your comment for this key"
@@ -29,12 +29,12 @@ C:\Users\YourUser/.ssh/yournewkey
 
 :arrow_forward: D. Copy your ssh-key to the remote server
 
-1. :small_orange_diamond: Windows:
+1. :small_orange_diamond: PowerShell on Windows:
 
 ```rust
 cat C:\Users\youruser/.ssh/yournewkey.pub | ssh -p 22 remoteuser@remote-server-ip "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys" 
 ```
-2. :small_orange_diamond: Linux/MacOs:
+2. :small_orange_diamond: Terminal on Linux/MacOs:
 
 ```rust
 $ -ssh-copy-id ~/.ssh/yournewkey remoteuser@remote-server-ip
