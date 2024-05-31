@@ -11,7 +11,7 @@ Existing Ubuntu Server with an existing user with sudo privilegdes
 a. Create an ssh-key pair on Windows or Linux/MacOS
 
 ```bash
-$ ssh-keygen -t ed25519 -C "your comment" for this key"
+$ ssh-keygen -t ed25519 -C "add your comment for this key"
 ```
 
 b. Specify the location of the key to be generated so you can put a name for quick reference
