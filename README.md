@@ -2,9 +2,12 @@
 
 ![alt text](https://github.com/ansible/logos/blob/main/vscode-ansible-logo/vscode-ansible.png "Logo Title Text 1")
 
-This is my own Ansible deployment for <strong><ins>Ubuntu Server</ins></strong> servers
+This is my own Ansible deployment for <strong><ins>`Ubuntu Server`</ins></strong> servers
 
 First, setup your infrastructure by editing the file
+
+Path | File
+
   > ansible_control/<strong><em>hosts.yml</em></strong>
 
 Second, setup your inventory by editing the file
