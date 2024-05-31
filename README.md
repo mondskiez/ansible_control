@@ -1,6 +1,5 @@
 # ansible_control
 
-Inline-style: 
 ![alt text](https://github.com/ansible/logos/blob/main/vscode-ansible-logo/vscode-ansible.png "Logo Title Text 1")
 
 This is my own Ansible deployment for <strong><ins>Ubuntu Server</ins></strong> servers
