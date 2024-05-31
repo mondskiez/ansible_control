@@ -8,7 +8,7 @@ Deploy one today from https://ubuntu.com/download/server
 
 # Prerequisites :white_check_mark:
 
-Existing Ubuntu Server with an existing user with sudo privilegdes
+Existing Ubuntu Server with user with sudo privilegdes and OpenSSH server enabled
 
    A. Create an ssh-key pair on Windows or Linux/MacOS
 
@@ -18,8 +18,8 @@ $ ssh-keygen -t ed25519 -C "add your comment for this key"
 
    B. SSH-keygen will ask for a location to save the file, remember to replace the resulting id_*** to something memorable like
 
-```bash
-C:\Users\YourUser/.ssh/yourkey
+```rust
+C:\Users\YourUser/.ssh/yournewkey
 ```
 
    C. The ssh-keygen will then generate your key pair to the location you specified using the filename your inputted in the location.
@@ -28,8 +28,8 @@ C:\Users\YourUser/.ssh/yourkey
 
 1. Windows:
 
-```bash
-cat C:\Users\youruser/.ssh/yourgenerated.pub | ssh -p 22 remoteuser@remote-server-ip "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys" 
+```rust
+cat C:\Users\youruser/.ssh/yournewkey.pub | ssh -p 22 remoteuser@remote-server-ip "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys" 
 ```
 2. Linux/MacOs:
 
