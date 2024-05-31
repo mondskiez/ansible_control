@@ -2,7 +2,7 @@
 
 ![alt text](https://github.com/ansible/logos/blob/main/vscode-ansible-logo/vscode-ansible.png "Logo Title Text 1")
 
-This is my own Ansible deployment of <strong><ins>`Ubuntu Server`</ins></strong>
+This is my own Ansible deployment for <strong><ins>`Ubuntu Servers`</ins></strong>
 
 # Prerequisites
 
@@ -46,8 +46,8 @@ From your terminal type:
 ```bash
 ansible-playbook run.yml -K --limit 'web5b,web7' -e 'ansible_user=old_user'
 ```
-  
-Notes: 
+
+<strong><ins>`Notes`*</ins></strong> 
 
 To run play with sudo password of user add:
 
