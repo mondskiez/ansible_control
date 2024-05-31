@@ -6,6 +6,8 @@ Deploy one today from https://ubuntu.com/download/server
 
 # :white_check_mark: Prerequisites 
 
+Ansible installed on your Linux/MacOs machine
+
 Existing Ubuntu Server with user with sudo privilegdes and OpenSSH server enabled
 
    A. Create an ssh-key pair on Windows or Linux/MacOS
