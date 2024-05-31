@@ -8,24 +8,25 @@ This is my own Ansible deployment for <strong><ins>`Ubuntu Server`</ins></strong
 
 First, setup your infrastructure by editing the file
 
-  * ansible_control/<strong><ins>`hosts.yml`</ins></strong>
+  * ansible_control/<strong>`*hosts.yml*`</strong>
 
 Second, setup your inventory by editing the file
   
-  * ansible_control/<strong><ins>`ansible.config`</ins></strong>
+  * ansible_control/<strong>`*ansible.config*`</strong>
 
 ---
 
 Playbook locations:
-  * playbooks/<strong><ins>base-server</ins></strong>
-  * playbooks/<strong><ins>server-maintenance</ins></strong>
+  * playbooks/<strong>`*base-server*`</strong>
+  * playbooks/<strong>`*server-maintenance*`</strong>
 
 The main play from either folder is:
-  * <strong><ins>`0-main.yml`</ins></strong>
+  * <strong>*`0-main.yml`*</strong>
 
 ---
 
-To run a specific task, edit the corresponding <strong><ins>0-main.yml</ins></strong> file and run:
+To run a specific task, edit the corresponding <strong><ins>`0-main.yml`</ins></strong> file and run:
+
 
 ```bash
 ansible-playbook playbooks/base-server/0-main.yml <strong><em>-K --limit 'web5b,web7' -e "ansible_user=old_user"</em></strong>
