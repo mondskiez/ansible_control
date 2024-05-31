@@ -1,0 +1,110 @@
+---
+
+### install your preferred base apps by listing them individually after name: -
+    - name: Installing base apps
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+        name:
+          - haveged
+          - htop 
+          - git
+          - aptitude
+          - net-tools
+          - zsh
+          - zsh-syntax-highlighting
+          - powerline
+          - fonts-powerline
+          - snapd
+        state: latest
+
+    - name: Installing snap canonical-livepatch
+      command: sudo snap install canonical-livepatch
+
+### this step is only for me coz I deploy docker Pi-Hole on all my servers
+### PiHole need exclusive use of Port 53
+### By default Port 53 will be used by systemd
+    - name: Check what is using Port 53
+      shell:
+        cmd: "sudo lsof -i:53 | awk 'FNR==2 {print $1}'"
+      register: port53user
+
+### show what process is using Port 53
+    - name: What process is using Port 53?
+      debug:
+        msg: Port 53 is being used by "{{port53user.stdout}}"
+
+### if Port 53 is being used by systemd then we have to free it up by editing resolved.conf
+### this process will add DNS to 1.1.1.1 and DNSStubListener=no
+    - name: editing /etc/systemd/resolved.conf
+      lineinfile:
+        path: /etc/systemd/resolved.conf
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+      loop:
+        - regexp: '^#DNS='
+          line: 'DNS=1.1.1.1'
+        - regexp: '^#DNSStubListener=yes'
+          line: 'DNSStubListener=no'
+      when: port53user.stdout == port53systemd
+
+### if Port 53 is being used by systemd then we have to force remove the existing symbolic links
+### this will only take effect after a server reboot
+    - name: Removing existing symbolic link of resolv.conf
+      command: sudo ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf
+      when: port53user.stdout == port53systemd
+
+### since I prefer using ZSH to bash
+    - name: change morty default shell to ZSH
+      command: usermod -s /usr/bin/zsh {{ user_name }}
+
+    #     cmd: "git config --global --add safe.directory /home/morty/.oh-my-zsh"
+
+    - name: Cloning github.com/robbyrussel/oh-my-zsh.git repo
+      git:
+        repo: https://github.com/robbyrussell/oh-my-zsh.git
+        dest: "{{ omz_zsh_path }}"
+
+    - name: Cloning github.com/zsh-users/zsh-autosuggestions repo
+      git:
+        repo: https://github.com/zsh-users/zsh-autosuggestions
+        dest: "{{ omz_auto_path }}"
+
+### change owner and group of .oh-my-zsh folder to morty
+    - name: Recursively set ownership to .oh-my-zsh folder
+      file:
+        path: "{{ omz_zsh_path }}"
+        owner: "{{ user_name }}"
+        group: "{{ user_name }}"
+        recurse: true
+
+### creating an empty hidden .hushlogin to disable Ubuntu message-of-the-day
+    - name: create .hushlogin file to disable MOTD
+      copy:
+        dest: "{{ omz_install_path }}.hushlogin"
+        content: |
+
+        owner: "{{ user_name }}"
+        group: "{{ user_name }}"
+
+### creating my desired .zshrc file with my preferred theme, plugins and aliases already incorporated
+    - name: Creating a .zshrc file
+      copy:
+        dest: "{{ omz_install_path }}.zshrc"
+        content: |
+          ZSH_THEME="xiong-chiamiov-plus"
+          plugins=(git sudo colored-man-pages zsh-autosuggestions)
+          source /home/morty/.oh-my-zsh/oh-my-zsh.sh
+          source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+          export PATH="/home/morty/.local/bin:$PATH"%
+          alias tq="clear && /usr/bin/bash /home/morty/tq.sh"
+          alias tp="clear && /usr/bin/bash /home/morty/tp.sh"
+          alias update="clear && sudo apt-get update -y && sudo apt-get upgrade -y && sudo apt-get dist-upgrade -y && sudo apt autoclean -y && sudo apt autoremove -y"
+          alias f2bss="sudo docker exec -it fail2ban fail2ban-client status sshd"
+          alias f2br="sudo docker exec -it fail2ban fail2ban-client restart"
+        owner: "{{ user_name }}"
+        group: "{{ user_name }}"
+
+  ### source the .zshrc file above for changes to take effect
+    - name: Run source to .zshrc to effect changes
+      shell: /usr/bin/zsh {{ omz_install_path }}.zshrc
