@@ -18,13 +18,12 @@ Be sure to specify a name for your key for easy identification
 
 2. Copy over your ssh-key from
 
-Windows:
+  Windows:
 
 ```bash
 cat C:\Users\youruser/.ssh/yourgenerated.pub | ssh -p 22 remoteuser@remote-server-ip "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys" 
 ```
-
-Linux/MacOs:
+  Linux/MacOs:
 
 ```bash
 $ -ssh-copy-id ~/.ssh/yoursshkey user@server-ip
