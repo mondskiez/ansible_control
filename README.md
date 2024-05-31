@@ -29,18 +29,15 @@ The main play is from the file
 ---
 
 To run a specific task, edit the corresponding <strong>*`0-main.yml`*</strong> file and run:
-
-
+---
 ```bash
-ansible-playbook playbooks/base-server/0-main.yml <strong><em>-K --limit 'web5b,web7' -e "ansible_user=old_user"</em></strong>
+ansible-playbook playbooks/base-server/0-main.yml <strong><em>-K --limit 'web5b,web7' -e "ansible_user=old_user"
 ```
-
 <em>The play above establishes your desired user on default SSH port 22 using the ansible_user found in your hosts.yml</em>
-  
+---  
 ```bash
-ansible-playbook playbooks/server-maintenance/0-mail.yml <strong><em>-K --limit 'host1,host2,host3' -e "ansible_user=new_user"</em></strong>
+ansible-playbook playbooks/server-maintenance/0-mail.yml <strong><em>-K --limit 'host1,host2,host3' -e "ansible_user=new_user"
 ```
-
 <em>The play above is executed by specifying your user that you created earlier with the modified SSH port that ran in the above play</em>
 
 Run the 2 plays consecutively with the && operator:
