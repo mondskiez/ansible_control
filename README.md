@@ -16,11 +16,9 @@ Second, setup your inventory by editing the file
 
 ---
 
-Base server playbook folder
-  * playbooks/base-server
-
-Server maintenance playbook:
-  * playbooks/server-maintenance
+Playbook locations:
+  * playbooks/<strong><ins>base-server</ins></strong>
+  * playbooks/<strong><ins>server-maintenance</ins></strong>
 
 The main play from either folder is:
   * <strong><ins>`0-main.yml`</ins></strong>
