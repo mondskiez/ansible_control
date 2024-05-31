@@ -62,19 +62,19 @@ ansible-playbook run.yml -K
 
 # :hash: Notes 
 
-:arrow_forward: To run play with sudo password of remote-user add:
+:hash: To run play with sudo password of remote-user add:
 
 ```rust
 -K
 ```
 
-To run play against a specific number of hosts use below  with comma(,) separated  hostnames
+:hash: To run play against a specific number of hosts use below  with comma(,) separated  hostnames
 
 ```rust
 --limit 'host4,domain3,remote7'
 ```
 
-To override the default user defined in the hosts.yml with a remote-user from a remote-server:
+:hash: To override the default user defined in the hosts.yml with a remote-user from a remote-server:
 
 ```rust
 -e "ansible_user=remote-user"
