@@ -13,14 +13,16 @@
       omz_auto_path: "/home/{{ user_name }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
       ssh_stream: 22
       port53systemd: systemd-r
+      cl_desired_time: 720
       jammy: 22.04
+
+### the following .yml files will be executed consecutively
+### to disable a task simply comment out the line
 
   tasks:
 
 ### Base Server Defaults
 
-### the following .yml files will be executed consecutively
-### to disable a task simply comment out the line
   - include_tasks: tasks/base-server/1-create-hostname.yml
   - include_tasks: tasks/base-server/2-create-user.yml
   - include_tasks: tasks/base-server/3-setup-apps.yml
@@ -31,3 +33,4 @@
 
   - include_tasks: tasks/server-maintenance/apt-upgrade.yml
   - include_tasks: tasks/server-maintenance/livepatch.yml
+  - include_tasks: tasks/server-maintenance/server-reboot.yml
