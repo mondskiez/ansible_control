@@ -10,14 +10,14 @@ First, setup your infrastructure by modifying <em>hosts.yml</em> from
 Second, setup your inventory and its path by editing <em>ansible.config</em> from
   > ansible_control/ansible.config
 
-Base server playbook is at:
+Base server playbook location
   > playbooks/base-server/0-main.yml
 
-Server maintenance playbook is at:
+Server maintenance playbook location:
   > playbooks/server-maintenance/0-main.yml
 
-To run a specific task, edit the corresponding 0-main.yml play file and run:
-  > ansible-playbook playbooks/base-server/0-main.yml -K --limit 'web5b,web7' -e "ansible_user=old_user"
+To run a specific task, edit the corresponding <em>0-main.yml</em> file and run:
+  > <strong>ansible-playbook playbooks/base-server/0-main.yml -K --limit 'web5b,web7' -e "ansible_user=old_user"</strong>
 
 <em>The play above establishes your desired user on default SSH port 22 using the ansible_user found in your hosts.yml</em>
   
