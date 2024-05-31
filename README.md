@@ -2,7 +2,7 @@
 
 ![alt text](https://github.com/ansible/logos/blob/main/vscode-ansible-logo/vscode-ansible.png "Logo Title Text 1")
 
-This is my own Ansible deployment for <strong><ins>`Ubuntu Servers`</ins></strong>
+This is my own Ansible deployment for [<strong><ins>`Ubuntu Servers`</ins></strong>]: https://ubuntu.com/download/server
 
 # Prerequisites :white_check_mark:
 
@@ -67,7 +67,7 @@ To run play against a specific number of hosts use below  with comma(,) separate
 --limit 'host4,domain3,remote7'
 ```
 
-To override the default user defined in the hosts.yml with the remote-user from the remote-server:
+To override the default user defined in the hosts.yml with a remote-user from a remote-server:
 
 ```bash
 -e "ansible_user=remote-user"
