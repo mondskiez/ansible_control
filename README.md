@@ -45,7 +45,7 @@ Second, configure your ansible config file
   
   * ansible_control/<strong>*`ansible.config`*</strong>
 
-# Running the Play
+# Running the Play :running:
 
 From your terminal type:
 
@@ -53,7 +53,7 @@ From your terminal type:
 ansible-playbook run.yml -K --limit 'remote-server1,remote-server2' -e 'ansible_user=remoteuser'
 ```
 
-<strong><ins>`Notes`*</ins></strong> 
+# Notes :hash:
 
 To run play with sudo password of remote-user add:
 
