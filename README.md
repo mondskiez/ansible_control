@@ -41,12 +41,11 @@ Second, configure your ansible config file
 
 # Running the Play
 
-To run any task, edit the corresponding <strong>`0-main.yml`</strong> file and run:
+From your terminal type:
 
 ```bash
 ansible-playbook run.yml -K --limit 'web5b,web7' -e 'ansible_user=old_user'
 ```
-<em>The play above creates your account with all the vars stated from within the run.yml file</em>
   
 Notes: 
 
