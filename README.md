@@ -8,24 +8,24 @@ This is my own Ansible deployment for <strong><ins>`Ubuntu Server`</ins></strong
 
 First, setup your infrastructure by editing the file
 
-  * ansible_control/<strong>`*hosts.yml*`</strong>
+  * ansible_control/<strong>*`hosts.yml`*</strong>
 
 Second, setup your inventory by editing the file
   
-  * ansible_control/<strong>`*ansible.config*`</strong>
+  * ansible_control/<strong>*`ansible.config`*</strong>
 
 ---
 
 Playbook locations:
-  * playbooks/<strong>`*base-server*`</strong>
-  * playbooks/<strong>`*server-maintenance*`</strong>
+  * playbooks/<strong>*`base-server*`*</strong>
+  * playbooks/<strong>*`server-maintenance`*</strong>
 
 The main play from either folder is:
   * <strong>*`0-main.yml`*</strong>
 
 ---
 
-To run a specific task, edit the corresponding <strong><ins>`0-main.yml`</ins></strong> file and run:
+To run a specific task, edit the corresponding <strong>*`0-main.yml`*</strong> file and run:
 
 
 ```bash
