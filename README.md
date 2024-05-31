@@ -1,10 +1,10 @@
 # ansible_control
-This is my own Ansible deployment for <strong>Ubuntu Server</strong> servers
+This is my own Ansible deployment for <strong><ins>Ubuntu Server</ins></strong> servers
 
-First, setup your infrastructure by modifying the hosts.yml file.
+First, setup your infrastructure by modifying the <samp>hosts.yml</samp> file.
   > ansible_control/hosts.yml
 
-Second, setup your inventory and setup its path by editing the ansible.config file.
+Second, setup your inventory and setup its path by editing the <em>ansible.config</em> file.
   > ansible_control/ansible.config
 
 Base server playbook is at:
