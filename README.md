@@ -7,23 +7,23 @@ First, modify the host.yml to your preferred structure.
 
 Second, setup your inventory path by editing the file.
 
-  1. $ ansible_control/ansible.config
+  * $ ansible_control/ansible.config
 
 Base server playbook is at:
 
-  1. playbooks/base-server/0-main.yml
+  * playbooks/base-server/0-main.yml
 
 Server maintenance playbook is at:
 
-  1. playbooks/server-maintenance/0-main.yml
+  * playbooks/server-maintenance/0-main.yml
 
 To run a specific task, edit the corresponding 0-main.yml play file and run:
 
-  1. $ ansible-playbook playbooks/base-server/0-main.yml -K --limit 'web5b,web7' -e "ansible_user=old_user"
+  * $ ansible-playbook playbooks/base-server/0-main.yml -K --limit 'web5b,web7' -e "ansible_user=old_user"
 
-  1. $ ansible-playbook playbooks/server-maintenance/0-mail.yml -K --limit 'host1,host2,host3' -e "ansible_user=new_user"
+  * $ ansible-playbook playbooks/server-maintenance/0-mail.yml -K --limit 'host1,host2,host3' -e "ansible_user=new_user"
 
-Run the 2 plays consecutively using the && operator:
+Run the 2 plays consecutively with the && operator:
 
     ansible-playbook playbook/base-server/0-main.yml playbook/server-maintenance/0-main.yml -K --limit 'host3,host6' -e "ansible_user=somebody" && ansible-playbook playbooks/server-maintenance/0-main.yml --limit 'host1,host2,host' -e "ansible_user=morty" -e "ansible_ssh_port=22222"
 
