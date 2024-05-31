@@ -1,35 +1,19 @@
 ---
 
-      # - name: Check Canonical-LivePatch Binary exists
-      #   shell: which canonical-livepatch
-      #   register: lp_location
-      #   ignore_errors: yes
-
-      # - name: Canonical-LivePatch binary exists
-      #   debug:
-      #     msg: "Binary is located at {{ lp_location.stdout }}"
-      #   when: lp_location.stdout
-
-      # - name: Canonical-LivePatch binary does not exist
-      #   debug:
-      #     msg: "Binary is not found at /snap/bin/canonical-livepatch"
-      #   when: not lp_location.stdout
-
       - name: Retrieving default check-interval time
         shell: canonical-livepatch config | grep check | awk 'FNR == 1 {print $2}'
-        register: cl_time_before
+        register: cl_check_before
 
       - name: Updating check-interval config to desired time
         command: canonical-livepatch config check-interval={{ cl_desired_time }}
-        register: lp_desired_time
 
       - name: Retrieving updated check-interval time
         shell:
           cmd: canonical-livepatch config | grep check | awk 'FNR == 1 {print $2}'
-        register: cl_time_after
+        register: cl_check_after
 
-      - name: Compare check-interval times
+      - name: Compare time interval times by minutes
         debug:
           msg: 
-          - "Canonical-LivePatch check-intervtime before: {{ cl_time_before.stdout }}" 
-          - "Canonical-LivePatch check-interval time after: {{ cl_time_after.stdout }}"
+          - "Canonical-LivePatch check-intervtime before: {{ cl_check_before.stdout }}" 
+          - "Canonical-LivePatch check-interval time after: {{ cl_check_after.stdout }}"
