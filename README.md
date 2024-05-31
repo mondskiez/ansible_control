@@ -4,6 +4,7 @@
 
 This is my own Ansible deployment for <strong><ins>`Ubuntu Server`</ins></strong> servers
 
+# Setup your Hosts and Inventory
 ---
 
 First, setup your infrastructure by editing the file
@@ -14,15 +15,17 @@ Second, setup your inventory by editing the file
   
   * ansible_control/<strong>*`ansible.config`*</strong>
 
+# Play Locations
 ---
 
 Playbook locations:
-  * playbooks/<strong>*`base-server*`*</strong>
+  * playbooks/<strong>*`base-server`*</strong>
   * playbooks/<strong>*`server-maintenance`*</strong>
 
 The main play from either folder is:
   * <strong>*`0-main.yml`*</strong>
 
+# Running the Play
 ---
 
 To run a specific task, edit the corresponding <strong>*`0-main.yml`*</strong> file and run:
@@ -42,7 +45,9 @@ ansible-playbook playbooks/server-maintenance/0-mail.yml <strong><em>-K --limit 
 
 Run the 2 plays consecutively with the && operator:
 
-  * ansible-playbook playbook/base-server/0-main.yml playbook/server-maintenance/0-main.yml -K --limit 'host3,host6' -e "ansible_user=somebody" <strong><em>&&</em></strong> ansible-playbook playbooks/server-maintenance/0-main.yml --limit 'host1,host2,host' -e "ansible_user=morty" -e "ansible_ssh_port=22222"
+```bash
+ansible-playbook playbook/base-server/0-main.yml playbook/server-maintenance/0-main.yml -K --limit 'host3,host6' -e "ansible_user=somebody" <strong><em>&&</em></strong> ansible-playbook playbooks/server-maintenance/0-main.yml --limit 'host1,host2,host' -e "ansible_user=morty" -e "ansible_ssh_port=22222"
+```
 
 Explaining the play above:
 
