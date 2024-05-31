@@ -23,6 +23,10 @@ Edit the 0-main.yml files accordingly and run it like:
 
     ansible-playbook playbooks/server-maintenance/0-mail.yml -K --limit 'host1,host2,host3' -e "ansible_user=new_user"
 
+Run the 2 plays consecutive like:
+
+    ansible-playbook playbook/base-server/0-main.yml playbook/server-maintenance/0-main.yml -K --limit 'host3,host6' -e "ansible_user=somebody"
+
 Note the trailing arguments after the 0-main.yml files in the command above
 
 To run play with sudo password of the server defined in hosts.yml use add:
