@@ -25,9 +25,9 @@ $ ssh-keygen -t ed25519 -C "add your comment for this key"
 C:\Users\YourUser/.ssh/yournewkey
 ```
 
-:arrow_forward" C. The ssh-keygen will then generate your key pair to the location you specified using the filename your inputted in the location.
-git 
-:arrow_forward" D. Copy your ssh-key to the remote server
+:arrow_forward: C. The ssh-keygen will then generate your key pair to the location you specified using the filename your inputted in the location.
+
+:arrow_forward: D. Copy your ssh-key to the remote server
 
 1. :small_orange_diamond: Windows:
 
