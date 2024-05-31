@@ -49,12 +49,16 @@ Run the 2 plays consecutively with the && operator:
 ansible-playbook playbook/base-server/0-main.yml playbook/server-maintenance/0-main.yml -K --limit 'host3,host6' -e "ansible_user=somebody" <strong><em>&&</em></strong> ansible-playbook playbooks/server-maintenance/0-main.yml --limit 'host1,host2,host' -e "ansible_user=morty" -e "ansible_ssh_port=22222"
 ```
 
-Explaining the consecutive play above:
+* Executing `base-server/0-main.yml` creates your server user.  
+      Assume that a freshly deployed Ubuntu Server has its SSH port at 22.
+      At the end of this play, the default SSH port of 22 will be changed to your desired port
+      as defined in the 0-main.yml.  Not unless the value is left at 22. 
 
-    > Executing `base-server/0-main.yml` creates your server user.  
-      Assume that a freshly deployed Ubuntu Server has its SSH port at 22. 
+* Executing `server-maintenance/0-main.yml` will update your server package.
+      After the first play, the second play will run because of the && operator in the original
+      command.  Therefore, you MUST specify the NEW ssh port number in the command, else it will
+      fail.
 
-* Executing `server-maintenance/0-main.yml` will update your server package. Note that 
 
 Notes: 
 
