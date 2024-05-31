@@ -17,13 +17,13 @@ Server maintenance playbook is at:
 
     playbooks/server-maintenance/0-main.yml
 
-Edit the 0-main.yml files accordingly and run it like:
+To run a specific task, edit the corresponding 0-main.yml play file and run:
 
     ansible-playbook playbooks/base-server/0-main.yml -K --limit 'web5b,web7' -e "ansible_user=old_user"
 
     ansible-playbook playbooks/server-maintenance/0-mail.yml -K --limit 'host1,host2,host3' -e "ansible_user=new_user"
 
-Run the 2 plays consecutive like:
+Run the 2 plays consecutively with:
 
     ansible-playbook playbook/base-server/0-main.yml playbook/server-maintenance/0-main.yml -K --limit 'host3,host6' -e "ansible_user=somebody"
 
