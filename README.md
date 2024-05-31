@@ -13,21 +13,21 @@ Ansible installed on your Linux/MacOs machine
 Existing Ubuntu Server with OpenSSH enabled and a user with sudo privileges
 
 
-A. Create an ssh-key pair on Windows or Linux/MacOS
+:ballot_box_with_check: A. Create an ssh-key pair on Windows or Linux/MacOS
 
 ```rust
 $ ssh-keygen -t ed25519 -C "add your comment for this key"
 ```
 
-B. SSH-keygen will ask for a location to save the file, remember to replace the resulting id_*** to something memorable like
+:ballot_box_with_check: B. SSH-keygen will ask for a location to save the file, remember to replace the resulting id_*** to something memorable like
 
 ```rust
 C:\Users\YourUser/.ssh/yournewkey
 ```
 
-C. The ssh-keygen will then generate your key pair to the location you specified using the filename your inputted in the location.
+:ballot_box_with_check: C. The ssh-keygen will then generate your key pair to the location you specified using the filename your inputted in the location.
 
-D. Copy your ssh-key to the remote server
+:ballot_box_with_check: D. Copy your ssh-key to the remote server
 
 1. Windows:
 
