@@ -11,7 +11,7 @@
 
     - name: copy NPM compose file
       copy:
-        src: ~/ansible_control/playbooks/docker/npm/docker-compose.yaml
+        src: /docker-compose.yaml
         dest: /home/morty/npm
         owner: morty
         group: morty
