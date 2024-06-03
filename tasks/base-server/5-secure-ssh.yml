@@ -20,9 +20,15 @@
         - regexp: '^#PermitRootLogin'
           line: 'PermitRootLogin No'
 
+### check SSH port before changes are made thru grepping and awking of ss -tulpn
+    - name: "SSH Port | checking default port"
+      shell: 
+        cmd: "sudo ss -tulpn | grep ssh | awk 'FNR == 1 {print $5}' | awk -F: '{print $2}'"
+      register: ssh_port_before
+
 ### on Ubuntu distros above 22.04 ssh is being handled by ssh.socket
 ### in order to save changes to the sshd_config, a directory must first be created
-    - name: ssh.socket | creating directory on distros above 22.04
+    - name: Detected distro above 22.04 | creating ssh.socket.d directory
       file:
         dest: /etc/systemd/system/ssh.socket.d/
         state: directory
@@ -30,15 +36,9 @@
         group: "{{ user_name }}"
       when: ansible_lsb.release|int >= 22.05
 
-### check SSH port before changes are made thru grepping and awking of ss -tulpn
-    - name: "SSH Port | checking default port"
-      shell: 
-        cmd: "sudo ss -tulpn | grep ssh | awk 'FNR == 1 {print $5}' | awk -F: '{print $2}'"
-      register: ssh_port_before
-
 ### after task above runs, an override.conf file must be created
 ### the override.conf file incorporates the variable for {{ ssh_stream }} as desired SSH port
-    - name: ssh.socket | creating override.conf on distros above 22.04 for desired SSH port 
+    - name: Detected distro above 22.04 | creating override.conf for desired SSH port 
       copy:
         dest: /etc/systemd/system/ssh.socket.d/override.conf
         content: |
@@ -47,39 +47,27 @@
           ListenStream={{ ssh_stream }}
       when: ansible_lsb.release|int >= 22.05
 
-### the ansible_lsb.release variable is piped into integer and is compared if it is less than or equal to 22.04
-### for 22.04 means it is Ubuntu Jammy Release
-    - name: Enabling SSH service on distros <= 22.04
-      command: sudo systemctl enable ssh
-      when: ansible_lsb.release|int <= 22.04
-
-### the ansible_lsb.release variable is piped into integer and is compared if it is greater than or equal to 22.05
-### 22.05 means it is above the Ubuntu Jammy Release 
-    - name: Enabling SSH service on distros > 22.04
-      command: sudo systemctl enable ssh.service
-      when: ansible_lsb.release|int >= 22.05
-
-    - name: UFW | adding rule for new SSH port
-      ufw:
-        rule: limit
-        port: "{{ ssh_stream }}"
-        proto: tcp
-
-### Jammy distro and below
-    - name: SSH | reloading service on distros <= 22.04
+### Distroy Jammy and below
+    - name: Detected distro below 22.04 | reloading SSH service
       service: 
         name: ssh
         state: reloaded
       when: ansible_lsb.release|int <= 22.04
 
 ### Distro is greater than Jammy
-    - name: SSH | reloading service on distros > 22.04
+    - name: Detected distro above 22.04 | reloading SSH service
       service:
         name: ssh.service
         state: reloaded
       when: ansible_lsb.release|int >= 22.05
     
-    - name: Reloading UFW service
+    - name: UFW | adding rule for new SSH port
+      ufw:
+        rule: limit
+        port: "{{ ssh_stream }}"
+        proto: tcp
+
+    - name: UFW | reloading service
       ufw:
         state: reloaded
 
