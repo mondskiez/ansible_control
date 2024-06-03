@@ -6,10 +6,10 @@
         update_cache: yes
         cache_valid_time: 3600
         name:
+          - aptitude
           - haveged
           - htop 
           - git
-          - aptitude
           - net-tools
           - zsh
           - zsh-syntax-highlighting
@@ -19,6 +19,25 @@
           - unattended-upgrades
           - update-notifier-common
         state: latest
+
+    - name: unattended-upgrades | copying 20auto-upgrades file
+      copy:
+        src: /files/20auto-upgrades
+        dest: "/etc/apt/apt.conf.d/20auto-upgrades"
+        owner: "{{ user_name }}"
+        group: "{{ user_name }}"
+    
+    - name: unattended-upgrades | copying 50unattended-upgrades file
+      copy:
+        src: /files/50unattended-upgrades
+        dest: /etc/apt/apt.conf.d/50unattended-upgrades  
+        owner: "{{ user_name }}"
+        group: "{{ user_name }}"
+
+    - name: unattended-upgrades | restarting service
+      service:
+        name: unattended-upgrades
+        state: restarted 
 
     - name: Installing snap canonical-livepatch
       command: sudo snap install canonical-livepatch
@@ -92,19 +111,8 @@
 ### creating my desired .zshrc file with my preferred theme, plugins and aliases already incorporated
     - name: Creating a .zshrc file
       copy:
+        src: /files/.zshrc
         dest: "{{ omz_install_path }}.zshrc"
-        content: |
-          DISABLE_UPDATE_PROMPT=true
-          ZSH_THEME="xiong-chiamiov-plus"
-          plugins=(git sudo colored-man-pages zsh-autosuggestions)
-          source /home/morty/.oh-my-zsh/oh-my-zsh.sh
-          source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-          export PATH="/home/morty/.local/bin:$PATH"%
-          alias tq="clear && /usr/bin/bash /home/morty/tq.sh"
-          alias tp="clear && /usr/bin/bash /home/morty/tp.sh"
-          alias update="clear && sudo apt-get update -y && sudo apt-get upgrade -y && sudo apt-get dist-upgrade -y && sudo apt autoclean -y && sudo apt autoremove -y"
-          alias f2bss="sudo docker exec -it fail2ban fail2ban-client status sshd"
-          alias f2br="sudo docker exec -it fail2ban fail2ban-client restart"
         owner: "{{ user_name }}"
         group: "{{ user_name }}"
 
