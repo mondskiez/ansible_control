@@ -11,7 +11,7 @@
 
     - name: copy fail2ban Docker Compose files
       copy:
-        src: ~/ansible_control/playbooks/docker/fail2ban/docker-compose.yaml
+        src: /docker-compose.yaml
         dest: /home/morty/fail2ban
         owner: morty
         group: morty
@@ -26,7 +26,7 @@
 
     - name: create jail.local
       copy:
-        src: ~/ansible_control/playbooks/docker/fail2ban/jail.local
+        src: /jail.local
         dest: /home/morty/fail2ban/data/jail.d
         owner: morty
         group: morty
