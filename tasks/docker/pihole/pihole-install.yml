@@ -11,7 +11,7 @@
 
     - name: copy Pihole compose file
       copy:
-        src: ~/ansible_control/playbooks/docker/pihole/docker-compose.yaml
+        src: /pihole/docker-compose.yaml
         dest: /home/morty/pihole
         owner: morty
         group: morty
