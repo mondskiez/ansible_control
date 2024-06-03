@@ -3,7 +3,7 @@
 ### create the user that you want to you
 ### be sure to create a password with mkpasswd -m 'sha-512' 'your preferred password'
 ### with the generated hash replace the value below
-    - name: Create morty user
+    - name: User | creation
       user:
         name: "{{ user_name }}"
         password: "{{ user_pword }}"
@@ -12,7 +12,7 @@
 ### this will allow the user you created to have no password will running sudo
 ### just change the name of the user at the end of the destination /etc/sudoers.d/youruser
 ### also replace content | morty to youruser
-    - name: create morty nopasswd sudoers
+    - name: User | creation of nopasswd sudoers
       copy:
         dest: /etc/sudoers.d/{{ user_name }}
         owner: root
@@ -22,10 +22,12 @@
 
 ### be sure to create your ssh-key pair beforehand - use ed25519 for shorter phrase
 ### add the contents of the public key
-    - name: add user sshkey
+    - name: User | adding ssh_key
       authorized_key:
         user: "{{ user_name }}"
-        key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKLT51cPfBtitD7yLQ6Ed2ViIE9YSV5bUUth3LcZsFMc ansible"
+        key: "{{ item }}"
+      with_file:
+        - files/key/ansible.pub
 
 ### copy your sudo password as above
     - name: Ensure ansible_sudo_passwd matches the [new] user passwd
