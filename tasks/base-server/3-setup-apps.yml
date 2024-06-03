@@ -16,6 +16,8 @@
           - powerline
           - fonts-powerline
           - snapd
+          - unattended-upgrades
+          - update-notifier-common
         state: latest
 
     - name: Installing snap canonical-livepatch
@@ -24,7 +26,7 @@
 ### this step is only for me coz I deploy docker Pi-Hole on all my servers
 ### PiHole need exclusive use of Port 53
 ### By default Port 53 will be used by systemd
-    - name: Check what is using Port 53
+    - name: Checking what process is using Port 53
       shell:
         cmd: "sudo lsof -i:53 | awk 'FNR==2 {print $1}'"
       register: port53user
@@ -92,6 +94,7 @@
       copy:
         dest: "{{ omz_install_path }}.zshrc"
         content: |
+          DISABLE_UPDATE_PROMPT=true
           ZSH_THEME="xiong-chiamiov-plus"
           plugins=(git sudo colored-man-pages zsh-autosuggestions)
           source /home/morty/.oh-my-zsh/oh-my-zsh.sh
