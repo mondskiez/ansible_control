@@ -1,5 +1,11 @@
 ---
 
+### check SSH port before changes are made thru grepping and awking of ss -tulpn
+    - name: SSH Port | checking default port
+      shell: 
+        cmd: "sudo ss -tulpn | grep ssh | awk 'FNR == 1 {print $5}' | awk -F: '{print $2}'"
+      register: ssh_port_before
+
 ### edit the sshd_config to configure sshkey login
     - name: sshd_config | modifying config file for publickey authentication only
       lineinfile: 
@@ -20,15 +26,9 @@
         - regexp: '^#PermitRootLogin'
           line: 'PermitRootLogin No'
 
-### check SSH port before changes are made thru grepping and awking of ss -tulpn
-    - name: "SSH Port | checking default port"
-      shell: 
-        cmd: "sudo ss -tulpn | grep ssh | awk 'FNR == 1 {print $5}' | awk -F: '{print $2}'"
-      register: ssh_port_before
-
 ### on Ubuntu distros above 22.04 ssh is being handled by ssh.socket
 ### in order to save changes to the sshd_config, a directory must first be created
-    - name: Detected distro above 22.04 | creating ssh.socket.d directory
+    - name: Detected distro > 22.04 | creating ssh.socket.d directory
       file:
         dest: /etc/systemd/system/ssh.socket.d/
         state: directory
@@ -36,9 +36,7 @@
         group: "{{ user_name }}"
       when: ansible_lsb.release|int >= 22.05
 
-### after task above runs, an override.conf file must be created
-### the override.conf file incorporates the variable for {{ ssh_stream }} as desired SSH port
-    - name: Detected distro above 22.04 | creating override.conf for desired SSH port 
+    - name: Detected distro > 22.04 | adding new SSH port 
       copy:
         dest: /etc/systemd/system/ssh.socket.d/override.conf
         content: |
@@ -47,21 +45,19 @@
           ListenStream={{ ssh_stream }}
       when: ansible_lsb.release|int >= 22.05
 
-### Distroy Jammy and below
-    - name: Detected distro below 22.04 | reloading SSH service
-      service: 
-        name: ssh
-        state: reloaded
-      when: ansible_lsb.release|int <= 22.04
-
-### Distro is greater than Jammy
-    - name: Detected distro above 22.04 | reloading SSH service
+    - name: SSH service | restarting on distro > 22.04
       service:
         name: ssh.service
-        state: reloaded
+        state: restarted
       when: ansible_lsb.release|int >= 22.05
+
+    - name: SSH service | restarting on distro <= 22.04
+      service: 
+        name: ssh
+        state: restarting
+      when: ansible_lsb.release|int <= 22.04
     
-    - name: UFW | adding rule for new SSH port
+    - name: UFW | adding new SSH port
       ufw:
         rule: limit
         port: "{{ ssh_stream }}"
@@ -76,10 +72,10 @@
         cmd: "sudo ss -tulpn | grep ssh | awk 'FNR == 1 {print $5}' | awk -F: '{print $2}'"
       register: ssh_port_after
 
-    - name: Comparing SSH ports before and after
+    - name: Comparing before and after SSH ports
       debug:
         msg: 
-        - "SSH old port: {{ ssh_port_before.stdout }}"
-        - "SSH new port: {{ ssh_port_after.stdout }}"
+        - "SSH port before: {{ ssh_port_before.stdout }}"
+        - "SSH port after:  {{ ssh_port_after.stdout }}"
         - "----------------------------------------------------------------------------"
         - "Be sure to reconfigure your hosts.yml file to point to the new port at {{ ssh_port_after.stdout }}"

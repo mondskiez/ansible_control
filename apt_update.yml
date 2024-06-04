@@ -1,0 +1,13 @@
+---
+
+- hosts: all
+  become: yes
+  tasks:
+
+    - name: Upgrade all packages to their latest version
+      become: yes
+      ansible.builtin.apt:
+       update_cache: yes
+       upgrade: yes
+       autoclean: true
+       autoremove: true
