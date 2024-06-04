@@ -22,15 +22,15 @@
 
     - name: unattended-upgrades | copying 20auto-upgrades file
       copy:
-        src: /files/20auto-upgrades
-        dest: "/etc/apt/apt.conf.d/20auto-upgrades"
+        src: files/20auto-upgrades
+        dest: /etc/apt/apt.conf.d/20auto-upgrades
         owner: "{{ user_name }}"
         group: "{{ user_name }}"
     
     - name: unattended-upgrades | copying 50unattended-upgrades file
       copy:
-        src: /files/50unattended-upgrades
-        dest: /etc/apt/apt.conf.d/50unattended-upgrades  
+        src: files/50unattended-upgrades
+        dest: /etc/apt/apt.conf.d/50unattended-upgrades
         owner: "{{ user_name }}"
         group: "{{ user_name }}"
 
@@ -111,7 +111,7 @@
 ### creating my desired .zshrc file with my preferred theme, plugins and aliases already incorporated
     - name: Creating a .zshrc file
       copy:
-        src: /files/.zshrc
+        src: files/.zshrc
         dest: "{{ omz_install_path }}.zshrc"
         owner: "{{ user_name }}"
         group: "{{ user_name }}"
