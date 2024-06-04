@@ -54,7 +54,7 @@
     - name: SSH service | restarting on distro <= 22.04
       service: 
         name: ssh
-        state: restarting
+        state: restarted
       when: ansible_lsb.release|int <= 22.04
     
     - name: UFW | adding new SSH port
