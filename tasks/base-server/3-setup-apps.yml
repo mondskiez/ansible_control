@@ -7,18 +7,27 @@
         cache_valid_time: 3600
         name:
           - aptitude
+          - fonts-powerline
+          - git
           - haveged
           - htop 
-          - git
+          - mail-utils
+          - mailutils
+          - micro
           - net-tools
-          - zsh
-          - zsh-syntax-highlighting
+          - openssh-server
           - powerline
-          - fonts-powerline
-          - snapd
           - unattended-upgrades
           - update-notifier-common
+          - zsh
+          - zsh-syntax-highlighting
         state: latest
+    
+    - name: Removing snap
+      apt:
+        name:
+          - snapd
+        state: absent
 
     - name: unattended-upgrades | copying 20auto-upgrades file
       copy:

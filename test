@@ -1,0 +1,15 @@
+aptitude
+openssh-server
+haveged
+htop 
+git
+micro
+net-tools
+zsh
+mail-utils
+zsh-syntax-highlighting
+powerline
+fonts-powerline
+unattended-upgrades
+update-notifier-common
+mailutils
