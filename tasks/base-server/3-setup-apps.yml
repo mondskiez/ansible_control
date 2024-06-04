@@ -10,8 +10,7 @@
           - fonts-powerline
           - git
           - haveged
-          - htop 
-          - mail-utils
+          - htop
           - mailutils
           - micro
           - net-tools
@@ -124,4 +123,4 @@
 
   ### source the .zshrc file above for changes to take effect
     - name: Run source to .zshrc to effect changes
-      shell: /usr/bin/zsh {{ omz_install_path }}.zshrc
+      shell: omz reload
