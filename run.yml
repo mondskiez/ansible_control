@@ -11,7 +11,7 @@
       omz_install_path: "/home/{{ user_name }}/"
       omz_zsh_path: "/home/{{ user_name }}/.oh-my-zsh/"
       omz_auto_path: "/home/{{ user_name }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
-      ssh_stream: 22
+      ssh_stream: 22222
       port53systemd: systemd-r
       cl_desired_time: 720
       jammy: 22.04
@@ -32,5 +32,4 @@
 ### Server Maintenance
 
   - include_tasks: tasks/server-maintenance/apt-upgrade.yml
-  - include_tasks: tasks/server-maintenance/livepatch.yml
   - include_tasks: tasks/server-maintenance/server-reboot.yml
