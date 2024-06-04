@@ -39,9 +39,6 @@
         name: unattended-upgrades
         state: restarted 
 
-    - name: Installing snap canonical-livepatch
-      command: sudo snap install canonical-livepatch
-
 ### this step is only for me coz I deploy docker Pi-Hole on all my servers
 ### PiHole need exclusive use of Port 53
 ### By default Port 53 will be used by systemd
