@@ -7,7 +7,7 @@
         name: OpenSSH
 
 ### UFW allow ports 80 and 443
-    - name: UFW allow ports 80 443
+    - name: UFW | add allow rules for ports 80 443 53
       ufw:
         rule: "{{ item.rule }}"
         port: "{{ item.port }}"
@@ -19,8 +19,14 @@
         - rule: allow
           port: 443
           proto: tcp
+        - rule: allow
+          port: 53
+          proto: tcp
+        - rule: allow
+          port: 53
+          proto: udp
 
 ### enable and start UFW
-    - name: enable and start UFW service
+    - name: UFW | enable and start service
       ufw:
         state: enabled
