@@ -10,7 +10,7 @@
         - regexp: '^Include'
           line: '#Include /etc/ssh/sshd_config.d/*.conf'
         - regexp: '^#Port'
-          line: 'Port 22222'
+          line: 'Port {{ ssh_stream }}'
         - regexp: '^#?AuthenticationMethods' 
           line: 'AuthenticationMethods publickey'
         - regexp: '^#?PasswordAuthentication' 
