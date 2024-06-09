@@ -10,8 +10,8 @@ services:
       TZ: "Asia/Manila"
       DISABLE_IPV6: "1"
     volumes:
-      - "/home/morty/npm/data/nginx-proxy-manager:/config:rw"
-      - "/home/morty/npm/data/nginx-proxy-manager/crowdsec/templates:/templates:ro"
+      - "~/docker/npm/data/nginx-proxy-manager:/config:rw"
+      - "~/docker/npm/data/nginx-proxy-manager/crowdsec/templates:/templates:ro"
     networks:
       crowdsec_proxy:
         ipv4_address: 172.20.0.4
@@ -25,8 +25,8 @@ services:
       PGID: "1000"
       COLLECTIONS: "crowdsecurity/http-cve crowdsecurity/whitelist-good-actors crowdsecurity/iptables crowdsecurity/nginx crowdsecurity/nginx-proxy-manager"
     volumes:
-      - "/home/morty/npm/crowdsec/data:/var/lib/crowdsec/data"
-      - "/home/morty/npm/crowdsec/config:/etc/crowdsec"
+      - "~/docker/npm/crowdsec/data:/var/lib/crowdsec/data"
+      - "~/docker/npm/crowdsec/config:/etc/crowdsec"
       - "/var/log/auth.log:/var/log/auth.log:ro"
       - "/data/logs:/var/log/nginx:ro"
     restart: unless-stopped

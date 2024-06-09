@@ -1,13 +1,12 @@
 services:
   fail2ban:
-    container_name: fail2ban
-    image: crazymax/fail2ban:latest
-    restart: always
-    network_mode: host
-    cap_add:
-      - NET_ADMIN
-      - NET_RAW
-    volumes:
-      - /home/morty/fail2ban/data:/data
-      - /var/log:/var/log:ro
-        
+      container_name: fail2ban
+      restart: always
+      network_mode: host
+      cap_add:
+          - NET_ADMIN
+          - NET_RAW
+      volumes:
+          - ~/docker/fail2ban/data:/data
+          - /var/log:/var/log:ro
+      image: crazymax/fail2ban:latest

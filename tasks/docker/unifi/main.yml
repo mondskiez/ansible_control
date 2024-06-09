@@ -1,0 +1,22 @@
+---
+
+    - name: create ~/docker/unifi directory
+      file:
+        dest: ~/docker/unifi/
+        state: directory
+        mode: '0755'
+
+    - name: copying unifi compose file
+      copy:
+        src: unifi/docker-compose.yml
+        dest: ~/docker/unifi/
+        owner: morty
+        group: morty
+        mode: '0755'
+
+    - name: deploying pihole
+      community.docker.docker_compose_v2:
+        project_src: ~/docker/unifi/
+        files:
+        - docker-compose.yml
+        state: present

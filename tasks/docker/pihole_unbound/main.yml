@@ -1,0 +1,22 @@
+---
+
+    - name: create ~/docker/pihole directory
+      file:
+        dest: ~/docker/pihole/
+        state: directory
+        mode: '0755'
+
+    - name: copying pihole compose file
+      copy:
+        src: pihole/docker-compose.yaml
+        dest: ~/docker/pihole/
+        owner: morty
+        group: morty
+        mode: '0755'
+
+    - name: deploying pihole
+      community.docker.docker_compose_v2:
+        project_src: /home/morty/pihole/
+        files:
+        - docker-compose.yaml
+        state: present

@@ -1,0 +1,22 @@
+---
+
+    - name: create ~/docker/watchtower directory
+      file:
+        dest: ~/docker/watchtower/
+        state: directory
+        mode: '0755'
+
+    - name: copying pihole compose file
+      copy:
+        src: watchtower/docker-compose.yml
+        dest: ~/docker/watchtower/
+        owner: morty
+        group: morty
+        mode: '0755'
+
+    - name: deploying pihole
+      community.docker.docker_compose_v2:
+        project_src: ~/docker/watchtower/
+        files:
+        - docker-compose.yml
+        state: present

@@ -3,43 +3,36 @@
 - hosts: all
   become: yes
   tasks:
-    - name: "create fail2ban directory in Morty"
+    - name: creating ~/docker/fail2ban directory
       file:
-        dest: /home/morty/fail2ban
+        dest: ~/docker/fail2ban/
         state: directory
         mode: '0755'
 
-    - name: copy fail2ban Docker Compose files
+    - name: copying fail2ban compose file
       copy:
-        src: /docker-compose.yaml
-        dest: /home/morty/fail2ban
+        src: fail2ban/docker-compose.yml
+        dest: ~/docker/fail2ban
         owner: morty
         group: morty
         mode: '0755'
 
-    - name: deploy fail2ban Container
+    - name: deploying fail2ban
       community.docker.docker_compose_v2:
-        project_src: /home/morty/fail2ban
+        project_src: ~/docker/fail2ban/
         files:
-        - docker-compose.yaml
-        #state: started
+        - docker-compose.yml
+        state: present
 
-    - name: create jail.local
+    - name: creating jail.local
       copy:
-        src: /jail.local
-        dest: /home/morty/fail2ban/data/jail.d
+        src: fail2ban/jail.local
+        dest: ~/docker/fail2ban/data/jail.d/
         owner: morty
         group: morty
         mode: '0755'
     
-    - name: restart docker fail2ban-client service
-      docker_container: 
-        name: fail2ban
-        image: crazymax/fail2ban:latest
-        state: started
-        restart: yes
-        #comparisons: 
-        #  '*': ignore
-
-#    - name: fail2ban-client sshd status
-#      command: "sudo docker exec -it fail2ban fail2ban-client status sshd"
+    - name: restarting fail2ban
+      community.docker.docker_compose_v2: 
+        project_src: ~/docker/fail2ban/
+        state: restarted

@@ -1,0 +1,32 @@
+---
+
+    - name: creating ~/docker/homepage directory
+      file:
+        dest: ~/docker/homepage/
+        state: directory
+        mode: '0755'
+
+    - name: copying homepage compose file
+      copy:
+        src: homepage/docker-compose.yml
+        dest: ~/docker/homepage/
+        owner: morty
+        group: morty
+        mode: '0755'
+
+    - name: deploying homepage
+      community.docker.docker_compose_v2:
+        project_src: ~/docker/homepage/
+        files:
+        - docker-compose.yml
+        state: present
+
+    - name: copying over files
+      copy:
+        src: homepage/files/
+        dest: ~/docker/homepage/config/
+    
+    - name: restarting homepage
+      community.docker.docker_compose_v2: 
+        project_src: ~/docker/homepage/
+        state: restarted

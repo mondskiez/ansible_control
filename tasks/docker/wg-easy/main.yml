@@ -1,0 +1,22 @@
+---
+
+    - name: create ~/docker/wg-easy directory
+      file:
+        dest: ~/docker/wg-easy/
+        state: directory
+        mode: '0755'
+
+    - name: copying pihole compose file
+      copy:
+        src: wg-easy/docker-compose.yml
+        dest: ~/docker/wg-easy/
+        owner: morty
+        group: morty
+        mode: '0755'
+
+    - name: deploying pihole
+      community.docker.docker_compose_v2:
+        project_src: ~/docker/wg-easy/
+        files:
+        - docker-compose.yml
+        state: present

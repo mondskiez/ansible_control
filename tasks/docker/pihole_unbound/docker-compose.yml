@@ -2,7 +2,7 @@ services:
   pihole:
     container_name: pihole
     image: pihole/pihole:latest # <- update image version here, see: https://github.com/pi-hole/docker-pi-hole/releases
-    hostname: pihole.sgp
+    hostname: pihole
     depends_on:
       - unbound
     restart: unless-stopped
@@ -12,8 +12,8 @@ services:
       - "53:53/udp" # DNS port
 # RECOMMENDED: Uncomment and adapt if you want to persist pihole configurations after restart
     volumes:
-      - "/var/lib/docker/volumes/pihole/pihole:/etc/pihole/"
-      - "/var/lib/docker/volumes/pihole/dnsmasq.d:/etc/dnsmasq.d/"
+      - "~/docker/pihole/pihole:/etc/pihole/"
+      - "~/docker/pihole/dnsmasq.d:/etc/dnsmasq.d/"
     environment:
       WEBPASSWORD: 'authy backups are so great'
       TZ: 'Asia/Manila'

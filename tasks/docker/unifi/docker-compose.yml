@@ -1,0 +1,22 @@
+services:
+  unifi:
+    user: unifi
+    image: ghcr.io/jacobalberty/unifi-docker
+    container_name: unifi-controller
+    restart: unless-stopped
+    ports:
+      - 8443:8443 # WebGUI
+      - 3478:3478/udp # stun
+      - 10001:10001/udp # device discovery  
+      - 8080:8080 # device and application communication
+      - 1900:1900/udp # make device discoverable in L2 network
+      - 8843:8843 # HTTPS portal redirection
+      - 8880:8880 # HTTP portal redirection
+      - 6789:6789 # UniFi mobile speed test
+      - 5514:5514/udp # for remote syslog
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Manila
+    volumes:
+      - ~/docker/unifi/data:/unifi

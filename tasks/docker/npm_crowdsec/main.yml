@@ -1,0 +1,27 @@
+---
+
+    - name: creating ~/docker/npm directory
+      file:
+        dest: ~/docker/npm/
+        state: directory
+        mode: '0755'
+
+    - name: copying npm compose file
+      copy:
+        src: npm/docker-compose.yml
+        dest: ~/docker/npm/
+        owner: morty
+        group: morty
+        mode: '0755'
+
+    - name: deploying npm
+      community.docker.docker_compose_v2:
+        project_src: ~/docker/npm/
+        files:
+        - docker-compose.yml
+        state: present
+
+    # - name: restarting npm container
+    #   community.docker.docker_compose_v2: 
+    #     project_src: ~/docker/npm/
+    #     state: restarted

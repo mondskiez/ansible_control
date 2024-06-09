@@ -1,0 +1,76 @@
+---
+
+- hosts: all
+  become: true
+  pre_tasks:
+
+    - name: Available Containers
+      debug:
+        msg: 
+         - "This play can install the following containers"
+         - "1. Portainer Community Edition"
+         - "2. fail2ban"
+         - "3. Nginx-Proxy-Manager with Crowdsec"
+         - "4. PiHole with Unbound"
+         - "5. Watchtower"
+         - "6. Wireguard Easy"
+         - "7. Homepage"
+         - "8. UniFi Controller"
+  
+  vars_prompt:
+
+    - name: portainer
+      prompt: Install Portainer?
+      private: false
+    
+    - name: fail2ban
+      prompt: Install fail2ban?
+      private: false
+    
+    - name: npm
+      prompt: Install Nginx-Proxy Manager with Crowdsec?
+      private: false
+    
+    - name: pihole
+      prompt: Install PiHole with Unbound"
+      private: false
+
+    - name: watchtower
+      prompt: Install Watchtower?
+      private: false
+
+    - name: wg-easy
+      prompt: Install WG-Easy?
+      private: false
+    
+    - name: homepage
+      prompt: Install Homepage?
+      private: false
+    
+    - name: unifi
+      prompt: Install UniFi Controller?
+      private: false
+
+- include_tasks: docker/portainer/main.yml
+  when: portainer undefined
+
+- include_tasks: docker/fail2ban/main.yml
+  when: fail2ban is defined
+
+- include_task: docker/npm/main.yml
+  when: npm is defined
+
+- include_tasks: docker/pihole/main.yml
+  when: pihole is defined
+
+- include_tasks: docker/portainer/main.yml
+  when: portainer is defined
+
+- include_tasks: docker/unifi/main.yml
+  when: unifi is defined
+
+- include_tasks: docker/watchtower/docker/npm/main.yml
+  when: watchtower is defined
+
+- include_tasks: docker/wg-easy/docker/npm/main.yml
+  when: wg-easy is defined
