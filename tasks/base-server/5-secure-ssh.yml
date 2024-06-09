@@ -34,7 +34,7 @@
         state: directory
         owner: "{{ user_name }}"
         group: "{{ user_name }}"
-      when: ansible_lsb.release|int >= 22.05
+      when: ansible_lsb.release|int >= 23
 
     - name: Detected distro > 22.04 | adding new SSH port 
       copy:
@@ -43,19 +43,19 @@
           [Socket]
           ListenStream=
           ListenStream={{ ssh_stream }}
-      when: ansible_lsb.release|int >= 22.05
+      when: ansible_lsb.release|int >= 23
 
     - name: SSH service | restarting on distro > 22.04
       service:
         name: ssh.service
         state: restarted
-      when: ansible_lsb.release|int >= 22.05
+      when: ansible_lsb.release|int >= 23
 
     - name: SSH service | restarting on distro <= 22.04
       service: 
         name: ssh
         state: restarted
-      when: ansible_lsb.release|int <= 22.04
+      when: ansible_lsb.release|int <= 22.05
     
     - name: UFW | adding new SSH port
       ufw:
