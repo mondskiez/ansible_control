@@ -5,8 +5,11 @@
       apt:
         update_cache: yes
         cache_valid_time: 3600
-        name:
+        name: "{{ item }}"
+        state: present
+      loop:
           - aptitude
+          - awk
           - cron
           - curl
           - fonts-powerline
@@ -32,7 +35,6 @@
           - update-notifier #update-notifier-common for Ubuntu
           - zsh
           - zsh-syntax-highlighting
-        state: latest
     
     - name: Removing snap
       apt:
