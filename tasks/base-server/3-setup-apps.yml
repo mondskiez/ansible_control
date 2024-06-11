@@ -7,17 +7,29 @@
         cache_valid_time: 3600
         name:
           - aptitude
+          - cron
+          - curl
           - fonts-powerline
+          - fzf
           - git
           - haveged
           - htop
+          - liblinux-usermod-perl
+          - lsof
           - mailutils
+          - mc
           - micro
+          - ncdu
           - net-tools
           - openssh-server
           - powerline
+          - software-properties-common
+          - sudo
+          - wget
+          - whois
           - unattended-upgrades
-          - update-notifier-common
+          - ufw
+          - update-notifier #update-notifier-common for Ubuntu
           - zsh
           - zsh-syntax-highlighting
         state: latest
@@ -27,6 +39,7 @@
         name:
           - snapd
         state: absent
+      when: ansible_distribution == "Ubuntu"
 
     - name: unattended-upgrades | copying 20auto-upgrades file
       copy:
@@ -123,4 +136,4 @@
 
   ### source the .zshrc file above for changes to take effect
     - name: Run source to .zshrc to effect changes
-      shell: omz reload
+      command: zsh {{ user_home }}/.zshrc
