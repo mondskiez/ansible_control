@@ -17,3 +17,17 @@
     - name: Set Timezone
       timezone:
         name: "{{ tz }}"
+
+### set journalctl log files to retain max 5 days
+    - name: system setup | logging | adjust retention period
+      lineinfile:
+        dest: "/etc/systemd/journald.conf"
+        regexp: "^#MaxFileSec="
+        line: "MaxFileSec=5day"
+      register: journald_config
+
+    - name: system setup | logging | restart journald (config changed)
+      service:
+        name: systemd-journald
+        state: restarted
+      when: journald_config.changed
