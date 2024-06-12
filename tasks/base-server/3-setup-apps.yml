@@ -12,6 +12,8 @@
           - awk
           - cron
           - curl
+          - debconf
+          - debconf-utils
           - fonts-powerline
           - fzf
           - git
