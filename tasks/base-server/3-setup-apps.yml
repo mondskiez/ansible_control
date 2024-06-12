@@ -19,7 +19,6 @@
           - htop
           - liblinux-usermod-perl
           - lsof
-          - mailutils
           - mc
           - micro
           - ncdu
