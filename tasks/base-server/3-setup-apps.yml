@@ -29,6 +29,7 @@
           - powerline
           - software-properties-common
           - sudo
+          - tree
           - wget
           - whois
           - unattended-upgrades
