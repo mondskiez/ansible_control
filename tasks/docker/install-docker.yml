@@ -1,5 +1,5 @@
 ---
-- name: Install Docker on Ubuntu
+- name: Install Docker-CE and Docker-Compose
   hosts: all
   become: true
   vars:
@@ -14,7 +14,7 @@
         upgrade: dist
         cache_valid_time: 3600
 
-    - name: Install required packages
+    - name: Docker | installing required packages
       apt:
         pkg:
           - apt-transport-https
@@ -24,32 +24,45 @@
           - software-properties-common
         state: latest
 
-    - name: Create directory for Docker's GPG key
-      file:
-        path: /etc/apt/keyrings
-        state: directory
-        mode: '0755'
+    - name: Docker | create /etc/apt/keyrings directory
+      command: sudo install -m 0755 -d /etc/apt/keyrings
 
-    - name: Add Docker's official GPG key
-      apt_key:
-        url: https://download.docker.com/linux/ubuntu/gpg
-        keyring: /etc/apt/keyrings/docker.gpg
-        state: present
+    - name: Docker | Ubuntu | adding official GPG key to docker.asc file
+      command: sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+      when: ansible_distribution == "Ubuntu"
+
+    - name: Docker | Debian | adding official GPG key to docker.ask file   
+      command: sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
+      when: ansible_distribution == "Debian"
+
+    - name: Docker | chmod a+r docker.asc file
+      command: sudo chmod a+r /etc/apt/keyrings/docker.asc
 
     - name: Print architecture variables
       debug:
         msg: "Architecture: {{ ansible_architecture }}, Codename: {{ ansible_lsb.codename }}"
 
-    - name: Add Docker repository
-      apt_repository:
-        repo: >-
-          deb [arch={{ arch_mapping[ansible_architecture] | default(ansible_architecture) }}
-          signed-by=/etc/apt/keyrings/docker.gpg]
-          https://download.docker.com/linux/ubuntu {{ ansible_lsb.codename }} stable
-        filename: docker
-        state: present
+    - name: Docker | Ubuntu | adding repository
+      shell: |
+        echo \
+        "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+        $(. /etc/os-release && echo "{{ ansible_lsb.codename }}") stable" | \
+        sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+      when: ansible_distribution == "Ubuntu"
 
-    - name: Install Docker and related packages
+    - name: Docker | Debian | adding repository
+      shell: |
+        echo \
+        "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
+        $(. /etc/os-release && echo "{{ ansible_lsb.codename }}") stable" | \
+        sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+      when: ansible_distribution == "Debian"
+
+    - name: Docker | updating repository index
+      apt:
+        update_cache: true
+
+    - name: Docker | installing componets and related packages
       apt:
         name: "{{ item }}"
         state: present
@@ -62,22 +75,18 @@
         - docker-buildx-plugin
         - docker-compose-plugin
 
-    - name: Install Docker-Compose PIP
-      pip: 
-        name: docker-compose
-
-    - name: Add Docker group
+    - name: Dokcer | adding Docker group
       group:
         name: docker
         state: present
 
-    - name: Add user to Docker group
+    - name: Docker | adding user to group
       user:
         name: "{{ ansible_user }}"
         groups: docker
         append: true
 
-    - name: Enable and start Docker services
+    - name: Enabling and starting Docker services
       systemd:
         name: "{{ item }}"
         enabled: true
@@ -86,16 +95,26 @@
         - docker.service
         - containerd.service
 
-    - Name: Get Docker version
-      shell: docker version
+    - name: Get Docker version
+      shell: docker version | awk 'FNR==2 {print $2}'
       register: dock_ver
     
-    - Name: Get Docker Compose version
-      shell: docker compose version
+    - name: Get Docker Compose version
+      shell: docker compose version | awk '{print $4}'
       register: dock_com_ver
     
-    - Name: Showing version results for Docker and Docker Compose
-      Debug:
-        Msg:
-          - "{{ dock_ver.stdout }}"
-          - "{{ dock_com_ver.stdout }}"
+    - name: Showing version results for Docker and Docker Compose
+      debug:
+        msg:
+          - "Docker version is: {{ dock_ver }}"
+          - "Docker compose version is: {{ dock_com_ver }}"
+    
+    - name: Docker | creating log driver
+      copy:
+        src: docker/files/daemon.json
+        dest: /etc/docker/
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+
+    - name: Docker | restarting service
+      shell: sudo systemctl restart docker
