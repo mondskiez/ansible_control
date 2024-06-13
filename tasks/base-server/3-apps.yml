@@ -1,0 +1,46 @@
+---
+
+### install your preferred base apps by listing them individually after name: -
+    - name: Installing base apps
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+        name: "{{ item }}"
+        state: present
+      loop:
+          - aptitude
+          - awk
+          - cron
+          - curl
+          - debconf
+          - debconf-utils
+          - fonts-powerline
+          - fzf
+          - git
+          - haveged
+          - htop
+          - liblinux-usermod-perl
+          - lsof
+          - mc
+          - micro
+          - ncdu
+          - net-tools
+          - openssh-server
+          - powerline
+          - software-properties-common
+          - sudo
+          - tree
+          - wget
+          - whois
+          - unattended-upgrades
+          - ufw
+          - update-notifier #update-notifier-common for Ubuntu
+          - zsh
+          - zsh-syntax-highlighting
+    
+    - name: Removing snap
+      apt:
+        name:
+          - snapd
+        state: absent
+      when: ansible_distribution == "Ubuntu"

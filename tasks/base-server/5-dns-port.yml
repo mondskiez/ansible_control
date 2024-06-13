@@ -1,0 +1,34 @@
+---
+
+### this step is only for me coz I deploy docker Pi-Hole on all my servers
+### PiHole need exclusive use of Port 53
+### By default Port 53 will be used by systemd
+    - name: Checking what process is using Port 53
+      shell:
+        cmd: "sudo lsof -i:53 | awk 'FNR==2 {print $1}'"
+      register: port53user
+
+### show what process is using Port 53
+    - name: What process is using Port 53?
+      debug:
+        msg: Port 53 is being used by "{{port53user.stdout}}"
+
+### if Port 53 is being used by systemd then we have to free it up by editing resolved.conf
+### this process will add DNS to 1.1.1.1 and DNSStubListener=no
+    - name: editing /etc/systemd/resolved.conf
+      lineinfile:
+        path: /etc/systemd/resolved.conf
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+      loop:
+        - regexp: '^#DNS='
+          line: 'DNS=1.1.1.1'
+        - regexp: '^#DNSStubListener=yes'
+          line: 'DNSStubListener=no'
+      when: port53user.stdout == port53systemd
+
+### if Port 53 is being used by systemd then we have to force remove the existing symbolic links
+### this will only take effect after a server reboot
+    - name: Removing existing symbolic link of resolv.conf
+      command: sudo ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf
+      when: port53user.stdout == port53systemd

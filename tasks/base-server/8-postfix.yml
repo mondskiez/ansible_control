@@ -1,0 +1,59 @@
+---
+
+  - name: postfix | installing package
+    apt:
+      name: postfix
+      state: present
+  
+  - name: postfix | configuring debconf
+    debconf:
+      name: postfix
+      question: "postfix/main_mailer_type"
+      value: "Internet Site"
+      vtype: "string"
+      state: "present"
+    with_items:
+      - "{{ ansible_hostname }}"
+  
+  - name: postfix | configuring SASL with gmail credentials
+    copy:
+      src: files/sasl_passwd
+      destination: /etc/postfix/sasl/
+  
+  - name: postfix | creating hash database
+    shell: sudo postmap /etc/postfix/sasl/sasl_passwd
+  
+  - name: postfix | protect plain-text password 
+    shell: sudo chown root:root /etc/postfix/sasl/sasl_passwd /etc/postfix/sasl/sasl_passwd.db
+  
+  - name: postfix | change permissions of files/sasl_passwd
+    shell: sudo chmod 0600 /etc/postfix/sasl/sasl_passwd /etc/postfix/sasl/sasl_passwd.db
+  
+  - name: postfix | adding hostname and relayhost to main.cf
+    lineinfile:
+      path: /etc/postfix/main.cf
+      regexp: "{{ item.regexp }}"
+      line: "{{ item.line }}"
+    loop:
+      - regexp: '^myhostname ='
+        line: 'myhostname = {{ ansible_hostname }}'
+      - regexp: '^relayhost ='
+        line: 'relayhost = [smtp.gmail.com]:587'
+
+  - name: postfix | adding SASL authentication
+    blockinfile:
+      path: /etc/postfix/main.cf
+      insert_after: "inet_protocols = all"
+      append_newline: yes
+      block: |
+        # Enable SASL authentication
+        smtp_sasl_auth_enable = yes
+        smtp_sasl_security_options = noanonymous
+        smtp_sasl_password_maps = hash:/etc/postfix/sasl/sasl_passwd
+        smtp_tls_security_level = encrypt
+        smtp_tls_CAfile = /etc/ssl/certs/ca-certificates.crt
+
+  - name: postfix | restarting service
+    service:
+      name: postfix
+      state: restarted

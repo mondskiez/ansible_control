@@ -1,0 +1,46 @@
+---
+
+### since I prefer using ZSH to bash
+    - name: change morty default shell to ZSH
+      command: usermod -s /usr/bin/zsh {{ user_name }}
+
+    #     cmd: "git config --global --add safe.directory /home/morty/.oh-my-zsh"
+
+    - name: Cloning github.com/robbyrussel/oh-my-zsh.git repo
+      git:
+        repo: https://github.com/robbyrussell/oh-my-zsh.git
+        dest: "{{ omz_zsh_path }}"
+
+    - name: Cloning github.com/zsh-users/zsh-autosuggestions repo
+      git:
+        repo: https://github.com/zsh-users/zsh-autosuggestions
+        dest: "{{ omz_auto_path }}"
+
+### change owner and group of .oh-my-zsh folder to morty
+    - name: Recursively set ownership to .oh-my-zsh folder
+      file:
+        path: "{{ omz_zsh_path }}"
+        owner: "{{ user_name }}"
+        group: "{{ user_name }}"
+        recurse: true
+
+### creating an empty hidden .hushlogin to disable Ubuntu message-of-the-day
+    - name: create .hushlogin file to disable MOTD
+      copy:
+        dest: "{{ omz_install_path }}.hushlogin"
+        content: |
+
+        owner: "{{ user_name }}"
+        group: "{{ user_name }}"
+
+### creating my desired .zshrc file with my preferred theme, plugins and aliases already incorporated
+    - name: Creating a .zshrc file
+      copy:
+        src: files/.zshrc
+        dest: "{{ omz_install_path }}.zshrc"
+        owner: "{{ user_name }}"
+        group: "{{ user_name }}"
+
+  ### source the .zshrc file above for changes to take effect
+    - name: Run source to .zshrc to effect changes
+      command: zsh {{ user_home }}/.zshrc
