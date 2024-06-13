@@ -6,6 +6,12 @@
 
     #     cmd: "git config --global --add safe.directory /home/morty/.oh-my-zsh"
 
+    - name: Git | global add safe safe.directory
+      command: "{{ item }}"
+      loop:
+        - git config --global --add safe.directory {{ omz_zsh_path }}
+        - git config --global --add safe.directory {{ omz_auto_path }}
+
     - name: Cloning github.com/robbyrussel/oh-my-zsh.git repo
       git:
         repo: https://github.com/robbyrussell/oh-my-zsh.git
