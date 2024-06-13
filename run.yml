@@ -23,11 +23,15 @@
 
 ### Base Server Defaults
 
-  - include_tasks: tasks/base-server/1-create-hostname.yml
-  - include_tasks: tasks/base-server/2-create-user.yml
-  - include_tasks: tasks/base-server/3-setup-apps.yml
-  - include_tasks: tasks/base-server/4-enable-ufw.yml
-  - include_tasks: tasks/base-server/5-secure-ssh.yml
+  - include_tasks: tasks/base-server/1-hostname.yml
+  - include_tasks: tasks/base-server/2-user.yml
+  - include_tasks: tasks/base-server/3-apps.yml
+  - include_tasks: tasks/base-server/4-unattended-upgrades.yml
+  - include_tasks: tasks/base-server/5-dns-port.yml
+  - include_tasks: tasks/base-server/6-zsh.yml
+  - include_tasks: tasks/base-server/7-ufw.yml
+  - include_tasks: tasks/base-server/8-postfix.yml
+  - include_tasks: tasks/base-server/9-ssh.yml
 
 ### Server Maintenance
 
