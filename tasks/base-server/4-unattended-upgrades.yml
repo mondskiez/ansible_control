@@ -9,11 +9,11 @@
     
     - name: unattended-upgrades | copying Ubuntu 50unattended-upgrades file
       copy:
-        src: files/50unattended-upgrades-unbuntu
+        src: files/50unattended-upgrades-ubuntu
         dest: /etc/apt/apt.conf.d/50unattended-upgrades
         owner: "{{ user_name }}"
         group: "{{ user_name }}"
-      when: "{{ ansible_distribution == Ubuntu }}"
+      when: ansible_distribution == "Ubuntu"
 
     - name: unattended-upgrades | copying Debian 50unattended-upgrades file
       copy:
@@ -21,7 +21,7 @@
         dest: /etc/apt/apt.conf.d/50unattended-upgrades
         owner: "{{ user_name }}"
         group: "{{ user_name }}"
-      when: "{{ ansible_distribution == Debian }}"
+      when: ansible_distribution == "Debian"
 
     - name: unattended-upgrades | restarting service
       service:
