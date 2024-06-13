@@ -9,7 +9,6 @@
         state: present
       loop:
           - aptitude
-          - awk
           - cron
           - curl
           - debconf
@@ -19,7 +18,6 @@
           - git
           - haveged
           - htop
-          - liblinux-usermod-perl
           - lsof
           - mc
           - micro
@@ -37,6 +35,18 @@
           - update-notifier #update-notifier-common for Ubuntu
           - zsh
           - zsh-syntax-highlighting
+
+    - name: Ubuntu | install awk
+      apt:
+        name: awk
+        state: present
+      when: ansible_distribution == "Ubuntu"
+
+    - name: Debian | install gawk
+      apt:
+        name: gawk
+        state: present
+      when: ansible_distribution == "Debian"
     
     - name: Removing snap
       apt:
