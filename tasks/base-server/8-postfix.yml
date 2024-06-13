@@ -5,20 +5,17 @@
       name: postfix
       state: present
   
-  - name: postfix | configuring debconf
-    debconf:
-      name: postfix
-      question: "postfix/main_mailer_type"
-      value: "Internet Site"
-      vtype: "string"
-      state: "present"
-    with_items:
-      - "{{ ansible_hostname }}"
-  
+  - name: postfix | configuring debcon-set-selections
+    shell: "{{ item }}"
+    loop:
+      - echo "postfix postfix/main_mailer_type select Internet Site" | sudo debconf-set-selections
+      - echo "postfix postfix/mailname string {{ ansible_hostname }}" | sudo debconf-set-selections
+      - echo "postfix postfix/destinations string {{ ansible_hostname }}, localhost.localdomain, localhost" | sudo debconf-set-selections
+
   - name: postfix | configuring SASL with gmail credentials
     copy:
       src: files/sasl_passwd
-      destination: /etc/postfix/sasl/
+      dest: /etc/postfix/sasl/
   
   - name: postfix | creating hash database
     shell: sudo postmap /etc/postfix/sasl/sasl_passwd
@@ -43,7 +40,7 @@
   - name: postfix | adding SASL authentication
     blockinfile:
       path: /etc/postfix/main.cf
-      insert_after: "inet_protocols = all"
+      insertafter: "inet_protocols = all"
       append_newline: yes
       block: |
         # Enable SASL authentication
@@ -57,3 +54,14 @@
     service:
       name: postfix
       state: restarted
+
+  - name: postfix | sending an e-mail using gmail SMTP server
+    community.general.mail:
+      host: smtp.gmail.com
+      port: 587
+      username: unifi.mondskiez@gmail.com
+      password: yboiicrlmjomhcsq
+      to: mon.lbpzlc@gmail.com
+      subject: Ansible-Report on {{ ansible_hostname }}
+      body: System {{ ansible_hostname }} has been successfully provisioned.
+    delegate_to: localhost
