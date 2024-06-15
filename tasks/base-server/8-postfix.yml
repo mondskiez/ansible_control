@@ -53,15 +53,4 @@
   - name: postfix | restarting service
     service:
       name: postfix
-      state: restarted
-
-  - name: postfix | sending an e-mail using gmail SMTP server
-    community.general.mail:
-      host: smtp.gmail.com
-      port: 587
-      username: unifi.mondskiez@gmail.com
-      password: yboiicrlmjomhcsq
-      to: mon.lbpzlc@gmail.com
-      subject: Ansible-Report on {{ ansible_hostname }}
-      body: System {{ ansible_hostname }} has been successfully provisioned.
-    delegate_to: localhost
+      state: restarted  
