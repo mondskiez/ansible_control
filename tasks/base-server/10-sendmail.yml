@@ -1,0 +1,38 @@
+  - name: postfix | sending an e-mail using gmail SMTP server
+    community.general.mail:
+      host: smtp.gmail.com
+      port: 587
+      username: unifi.mondskiez@gmail.com
+      password: "{{ smtp_pwd }}"
+      to: mon.lbpzlc@gmail.com
+      subject: Ansible-Report on {{ ansible_hostname }}
+      body: |
+        Congratulations, 
+
+        Ansible has successfully provisioned a computer with the 
+        following information:
+
+        ***************************************************
+        Server
+        ***************************************************
+        1. IP address: {{ ansible_default_ipv4.address }}
+        2. SSH port: {{ ssh_port_after.stdout }}
+        3. Hostname: {{ desired_hostname }}
+        4. OS: {{ ansible_system }}
+        5. Distribution: {{ ansible_lsb.description }}
+        6. Codename: {{ ansible_lsb.codename }}
+        ***************************************************
+
+        ***************************************************
+        User
+        ***************************************************
+        1. User: {{ user_name }}
+        2. Working: {{ ansible_env.PWD }}
+        3. Timezone: {{ tz }}
+        ***************************************************
+
+        ***************************************************
+        Connect via:
+        ssh -p {{ ssh_port_after.stdout }} {{ user_name }}@{{ ansible_default_ipv4.address }}
+        ***************************************************
+    delegate_to: localhost
