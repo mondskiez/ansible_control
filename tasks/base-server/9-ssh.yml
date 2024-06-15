@@ -1,13 +1,13 @@
 ---
 
 ### check SSH port before changes are made thru grepping and awking of ss -tulpn
-    - name: SSH Port | checking default port
+    - name: ssh | checking default port
       shell: 
         cmd: "sudo ss -tulpn | grep ssh | awk 'FNR == 1 {print $5}' | awk -F: '{print $2}'"
       register: ssh_port_before
 
 ### edit the sshd_config to configure sshkey login
-    - name: sshd_config | modifying config file for publickey authentication only
+    - name: ssh | modifying sshd_config file for publickey authentication only
       lineinfile: 
         path: /etc/ssh/sshd_config
         regexp: "{{ item.regexp }}"
@@ -26,53 +26,55 @@
         - regexp: '^#PermitRootLogin'
           line: 'PermitRootLogin No'
 
-### on Ubuntu distros above 22.04 ssh is being handled by ssh.socket
-### in order to save changes to the sshd_config, a directory must first be created
-    - name: Detected distro > 22.04 | creating ssh.socket.d directory
+    - name: ssh | creating ssh.socket.d directory
       file:
         dest: /etc/systemd/system/ssh.socket.d/
         state: directory
         owner: "{{ user_name }}"
         group: "{{ user_name }}"
-      when: ansible_lsb.release|int >= 23
+      when: (ansible_lsb.release|int >= 23 and ansible_distribution == "Ubuntu") or
+            (ansible_lsb.release|int >= 10 and ansible_distribution == "Debian")
 
-    - name: Detected distro > 22.04 | adding new SSH port 
+    - name: ssh | adding new SSH port via override.conf
       copy:
         dest: /etc/systemd/system/ssh.socket.d/override.conf
         content: |
           [Socket]
           ListenStream=
           ListenStream={{ ssh_stream }}
-      when: ansible_lsb.release|int >= 23
+      when: (ansible_lsb.release|int >= 23 and ansible_distribution == "Ubuntu") or
+            (ansible_lsb.release|int >= 10 and ansible_distribution == "Debian")
 
-    - name: SSH service | restarting on distro > 22.04
+    - name: ssh | restarting service
       service:
         name: ssh.service
         state: restarted
-      when: ansible_lsb.release|int >= 23
+      when: (ansible_lsb.release|int >= 23 and ansible_distribution == "Ubuntu") or
+            (ansible_lsb.release|int >= 10 and ansible_distribution == "Debian")
 
-    - name: SSH service | restarting on distro <= 22.04
+    - name: ssh | restarting service
       service: 
         name: ssh
         state: restarted
-      when: ansible_lsb.release|int <= 22.05
+      when: (ansible_lsb.release|int <= 22.05 and ansible_distribution == "Ubuntu") or
+            (ansible_lsb.release|int < 10 and ansible_distribution == "Debian")
     
-    - name: UFW | adding new SSH port
+    - name: ufw | adding new SSH port
       ufw:
         rule: limit
         port: "{{ ssh_stream }}"
         proto: tcp
 
-    - name: UFW | reloading service
+    - name: ufw | reloading service
       ufw:
         state: reloaded
 
-    - name: SSH | checking new port number
+    - name: ssh | checking new port number
       shell: 
         cmd: "sudo ss -tulpn | grep ssh | awk 'FNR == 1 {print $5}' | awk -F: '{print $2}'"
       register: ssh_port_after
 
-    - name: Comparing before and after SSH ports
+    - name: ssh | comparing before and after ports
       debug:
         msg: 
         - "SSH port before: {{ ssh_port_before.stdout }}"
