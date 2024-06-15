@@ -2,25 +2,12 @@
 
 - hosts: all
   become: true
-  vars:
-      desired_hostname: mondskiez-test
-      tz: Asia/Manila
-      user_name: morty
-      user_home: /home/{{ user_name }}
-      user_pword: $6$RWo0laTgZpiSlKES$X6adutPj3ZjVNubU3Ehg.E2B/DtEgd/ni7FGaa4XNVFdVrewPITM0fMUld5JD5hn8rrxXXnlvQBSeQ4uBBBfe0
-      omz_install_path: "/home/{{ user_name }}/"
-      omz_zsh_path: "/home/{{ user_name }}/.oh-my-zsh/"
-      omz_auto_path: "/home/{{ user_name }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
-      ssh_stream: 22222
-      port53systemd: systemd-r
-      cl_desired_time: 720
-      jammy: 22.04
-
-### the following .yml files will be executed consecutively
-### to disable a task simply comment out the line
-
   tasks:
-
+  - include_vars:
+      file: tasks/base-server/vars/main.yml
+  - include_vars:
+      file: tasks/base-server/vars/email.yml
+  
 ### Base Server Defaults
 
   - include_tasks: tasks/base-server/1-hostname.yml
@@ -32,6 +19,7 @@
   - include_tasks: tasks/base-server/7-ufw.yml
   - include_tasks: tasks/base-server/8-postfix.yml
   - include_tasks: tasks/base-server/9-ssh.yml
+  - include_tasks: tasks/base-server/10-sendmail.yml
 
 ### Server Maintenance
 
