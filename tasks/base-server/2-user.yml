@@ -4,7 +4,7 @@
 ### be sure to create a password with mkpasswd -m 'sha-512' 'your preferred password'
 ### with the generated hash replace the value below
     - name: User | creation
-      user:
+      ansible.builtin.user:
         name: "{{ user_name }}"
         password: "{{ user_pword }}"
         groups: sudo
