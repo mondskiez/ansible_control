@@ -9,6 +9,7 @@
         state: present
       loop:
           - aptitude
+          - bat
           - cron
           - curl
           - debconf
