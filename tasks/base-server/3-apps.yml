@@ -1,7 +1,7 @@
 ---
 
 ### install your preferred base apps by listing them individually after name: -
-    - name: Installing base apps
+    - name: Installing common base apps
       apt:
         update_cache: yes
         cache_valid_time: 3600
@@ -32,23 +32,28 @@
           - whois
           - unattended-upgrades
           - ufw
-          - update-notifier #update-notifier-common for Ubuntu
           - zsh
           - zsh-syntax-highlighting
 
-    - name: Ubuntu | install awk
+    - name: Ubuntu | installing distro-specific packages
       apt:
-        name: awk
+        name: "{{ item }}"
         state: present
+      loop:
+        - awk
+        - update-notifier-common
       when: ansible_distribution == "Ubuntu"
 
-    - name: Debian | install gawk
+    - name: Debian | installing distro-specific packages
       apt:
-        name: gawk
+        name: "{{ item }}"
         state: present
+      loop:
+        - apt-listchanges
+        - gawk
       when: ansible_distribution == "Debian"
     
-    - name: Removing snap
+    - name: Ubuntu | removing snap
       apt:
         name:
           - snapd
