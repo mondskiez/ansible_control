@@ -2,26 +2,40 @@
 
     - name: unattended-upgrades | copying 20auto-upgrades file
       copy:
-        src: files/20auto-upgrades
+        src: files/unattended-upgrades/20auto-upgrades
         dest: /etc/apt/apt.conf.d/20auto-upgrades
         owner: "{{ user_name }}"
         group: "{{ user_name }}"
     
-    - name: unattended-upgrades | copying Ubuntu 50unattended-upgrades file
+    - name: unattended-upgrades | Ubuntu | copying 50unattended-upgrades file
       copy:
-        src: files/50unattended-upgrades-ubuntu
+        src: files/unattended-upgrades/ubuntu-50unattended-upgrades
         dest: /etc/apt/apt.conf.d/50unattended-upgrades
         owner: "{{ user_name }}"
         group: "{{ user_name }}"
       when: ansible_distribution == "Ubuntu"
 
-    - name: unattended-upgrades | copying Debian 50unattended-upgrades file
+    - name: unattended-upgrades | Debian | copying 50unattended-upgrades file
       copy:
-        src: files/50unattended-upgrades-debian
+        src: files/unattended-upgrades/debian-50unattended-upgrades
         dest: /etc/apt/apt.conf.d/50unattended-upgrades
         owner: "{{ user_name }}"
         group: "{{ user_name }}"
       when: ansible_distribution == "Debian"
+    
+    - name: unattended-upgrades | Debian | apt-daily.timer | copying override.conf
+      copy:
+        src: files/unattended-upgrades/debian-daily.update.timer-override.conf
+        dest: /etc/systemd/system/apt-daily.timer.d/override.conf
+        owner: "{{ user_name }}"
+        group: "{{ user_name }}"
+    
+    - name: unattended-upgrades | Debian | apt-daily-upgrade.timer | copying override.conf
+      copy:
+        src: files/unattended-upgrades/debian-daily-upgrade.timer-override.conf
+        dest: /etc/systemd/system/apt-daily-upgrade.timer.d/override.conf
+        owner: "{{ user_name }}"
+        group: "{{ user_name }}"
 
     - name: unattended-upgrades | restarting service
       service:
